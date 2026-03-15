@@ -35,12 +35,12 @@ export const ASTTheme = mergeThemeOverrides(baseTheme, createTheme({
   fontFamily: 'system-ui, -apple-system, sans-serif',
   headings: {
     fontFamily: 'system-ui, -apple-system, sans-serif',
-    fontWeight: '800',
+    fontWeight: '700',
     sizes: {
-      h1: { fontSize: '3rem' },
-      h2: { fontSize: '2.25rem' },
-      h3: { fontSize: '1.75rem' },
-    },
+    h1: { fontSize: '4rem' },
+    h2: { fontSize: '3rem' },
+    h3: { fontSize: '2.25rem' },
+  },
   },
   fontSizes: {
   xs: '0.875rem',
@@ -110,10 +110,10 @@ export const EFFTheme =mergeThemeOverrides(baseTheme, createTheme({
     fontFamily: 'system-ui, -apple-system, sans-serif',
     fontWeight: '600',
     sizes: {
-      h1: { fontSize: '1.75rem' },
-      h2: { fontSize: '1.5rem' },
-      h3: { fontSize: '1.25rem' },
-    },
+    h1: { fontSize: '1.25rem' },
+    h2: { fontSize: '1.1rem' },
+    h3: { fontSize: '1rem' },
+  },
   },
   fontSizes: {
   xs: '0.75rem',

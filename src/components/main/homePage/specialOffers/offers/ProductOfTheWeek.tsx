@@ -23,7 +23,7 @@ const ProductOfTheWeek = () => {
     />
   );
 
-  const title = <Title order={mode === "EFF" ? 3 : 2}>Product name</Title>;
+  const title = <Title order={2}>Product name</Title>;
   const label = (
     <Text fw={500} c={mode === "EFF" ? "dimmed" : "astGreen.5"}>
       Produkt týdne

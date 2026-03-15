@@ -16,7 +16,7 @@ const NewArrivals = () => {
   const { mode } = useUIMode();
 
   const title = (
-    <Title order={mode === "EFF" ? 3 : 2}>
+    <Title order={2}>
       {mode === "EFF" ? (
         <Group gap="xs">
           Novinky <Zap size={20} fill="orange" color="orange" />

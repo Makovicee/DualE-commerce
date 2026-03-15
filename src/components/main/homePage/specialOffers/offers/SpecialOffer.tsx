@@ -34,7 +34,7 @@ const SpecialOffer = () => {
         >
           <Stack gap="xs">
             <Badge color="indigo">Akce</Badge>
-            <Title order={3}>50 % Sleva Tropické</Title>
+            <Title order={2}>50 % Sleva Tropické</Title>
             {subtitle}
           </Stack>
           <Group>
