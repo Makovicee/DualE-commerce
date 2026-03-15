@@ -1,7 +1,7 @@
 import { Carousel } from "@mantine/carousel";
 import { Badge, Group, Image, Paper, Stack, Text, Title } from "@mantine/core";
 import { Eye } from "lucide-react";
-import { useUIMode } from "../../../../contexts/UIModeContext";
+import { useUIMode } from "../../../../../contexts/UIModeContext";
 
 const SLIDES = [
   { src: null },

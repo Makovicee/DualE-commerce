@@ -9,7 +9,7 @@ import {
   ActionIcon,
 } from "@mantine/core";
 import { Info } from "lucide-react";
-import { useUIMode } from "../../../../contexts/UIModeContext";
+import { useUIMode } from "../../../../../contexts/UIModeContext";
 
 const ProductOfTheWeek = () => {
   const { mode } = useUIMode();

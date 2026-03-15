@@ -1,15 +1,12 @@
-import { Center, Stack, Grid, Image, ActionIcon, Text } from "@mantine/core";
+import { Center, Stack, Image, ActionIcon, Text } from "@mantine/core";
 import { useUIMode } from "../../../contexts/UIModeContext";
 import SearchTools from "./searchTools/SearchTools";
 
-import NewArrivals from "./specialOffers/NewArrivals";
-import ProductOfTheWeek from "./specialOffers/ProductOfTheWeek";
-import SpecialOffer from "./specialOffers/SpecialOffer";
 import { Flower } from "lucide-react";
+import SpecialOffers from "./specialOffers/SpecialOffers";
 
 const HomePage = () => {
   const { mode } = useUIMode();
-  const items = [<SpecialOffer />, <ProductOfTheWeek />, <NewArrivals />];
   return (
     <>
       {mode === "AST" && (
@@ -22,23 +19,9 @@ const HomePage = () => {
         />
       )}
       <Center flex={1}>
-        <Stack w={"50%"} gap={"xl"}>
-          {mode === "EFF" ? (
-            <>
-              <SearchTools />
-              <Grid gutter="md">
-                <Grid.Col span={6}>{items[0]}</Grid.Col>
-                <Grid.Col span={6}>
-                  <Stack gap="md" h="100%">
-                    {items[1]}
-                    {items[2]}
-                  </Stack>
-                </Grid.Col>
-              </Grid>
-            </>
-          ) : (
-            items
-          )}
+        <Stack w="50%" gap="xl">
+          {mode === "EFF" && <SearchTools />}
+          <SpecialOffers />
         </Stack>
       </Center>
       {mode === "AST" && (

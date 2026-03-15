@@ -10,7 +10,7 @@ import {
   Title,
 } from "@mantine/core";
 import { ArrowRight, Zap } from "lucide-react";
-import { useUIMode } from "../../../../contexts/UIModeContext";
+import { useUIMode } from "../../../../../contexts/UIModeContext";
 
 const NewArrivals = () => {
   const { mode } = useUIMode();
