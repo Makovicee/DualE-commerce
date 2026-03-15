@@ -42,6 +42,13 @@ export const ASTTheme = mergeThemeOverrides(baseTheme, createTheme({
       h3: { fontSize: '1.75rem' },
     },
   },
+  fontSizes: {
+  xs: '0.875rem',
+  sm: '1rem',
+  md: '1.125rem',
+  lg: '1.25rem',
+  xl: '1.5rem',
+},
   radius: {
     xs: '6px',
     sm: '10px',
@@ -108,6 +115,13 @@ export const EFFTheme =mergeThemeOverrides(baseTheme, createTheme({
       h3: { fontSize: '1.25rem' },
     },
   },
+  fontSizes: {
+  xs: '0.75rem',
+  sm: '0.875rem',
+  md: '1rem',
+  lg: '1.125rem',
+  xl: '1.25rem',
+},
   radius: {
     xs: '2px',
     sm: '3px',
