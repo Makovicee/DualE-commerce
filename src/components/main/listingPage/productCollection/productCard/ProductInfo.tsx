@@ -15,7 +15,7 @@ const STATS = ["Hydratace", "Světlo", "Toxicita"];
 
 const ProductInfo = () => {
   return (
-    <HoverCard width={750}>
+    <HoverCard width={750} transitionProps={{ duration: 0 }}>
       <HoverCard.Target>
         <ActionIcon h={"100%"} color="gray" variant="light" size={"input-xl"}>
           <Info size={22} />
