@@ -12,6 +12,7 @@ import {
 } from "@mantine/core";
 import { useUIMode } from "../../../../../contexts/UIModeContext";
 import { useHover } from "@mantine/hooks";
+import ProductInfo from "./ProductInfo";
 
 const ProductCard = () => {
   const { mode } = useUIMode();
@@ -69,7 +70,7 @@ const ProductCard = () => {
   return (
     <Card p={mode === "AST" ? 0 : "md"}>
       {mode === "EFF" ? (
-        <Group wrap="nowrap" justify="space-between" pr={"xl"}>
+        <Group wrap="nowrap" justify="space-between">
           <Group wrap="nowrap" gap={"xl"} w={"35%"}>
             {image}
             <Stack gap={0}>
@@ -93,6 +94,7 @@ const ProductCard = () => {
             {effNumberInput}
             {effNumberInput}
             {effNumberInput}
+            <ProductInfo />
           </Group>
         </Group>
       ) : (
