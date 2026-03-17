@@ -13,7 +13,7 @@ export const ThemedMantineProvider = ({
   return (
     <MantineProvider
       theme={mode === "EFF" ? EFFTheme : ASTTheme}
-      defaultColorScheme="light"
+      forceColorScheme="light"
     >
       {children}
     </MantineProvider>

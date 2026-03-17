@@ -5,6 +5,7 @@ import { ThemedMantineProvider } from "./contexts/ThemedMantineProvider";
 import { UIModeProvider } from "./contexts/UIModeProvider";
 import ListingPage from "./components/main/listingPage/ListingPage";
 import DetailPage from "./components/main/detailPage/DetailPage";
+import CheckoutPage from "./components/main/checkoutPage/CheckoutPage";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
               <Route path="/" element={<HomePage />} />
               <Route path="/listing" element={<ListingPage />} />
               <Route path="/detail/:id" element={<DetailPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

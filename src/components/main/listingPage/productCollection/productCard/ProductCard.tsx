@@ -48,6 +48,7 @@ const ProductCard = () => {
       stepHoldDelay={500}
       stepHoldInterval={100}
       suffix=" ks"
+      size="sm"
       allowDecimal={false}
       allowNegative={false}
       defaultValue={0}

@@ -99,6 +99,18 @@ export const ASTTheme = mergeThemeOverrides(baseTheme, createTheme({
         size: 'md',
       },
     },
+     Textarea: {
+      defaultProps: {
+        radius: 'md',
+        size: 'md',
+      },
+    },
+     Select: {
+      defaultProps: {
+        radius: 'md',
+        size: 'md',
+      },
+    },
 
   },
 }));
@@ -142,6 +154,10 @@ export const EFFTheme =mergeThemeOverrides(baseTheme, createTheme({
     md: '0 2px 8px rgba(0,0,0,0.14)',
   },
   components: {
+TextInput: { defaultProps: { size: 'xs', radius: 'xs' } },
+  Select: { defaultProps: { size: 'xs', radius: 'xs' } },
+  Textarea: { defaultProps: { size: 'xs', radius: 'xs' } },
+  NumberInput: { defaultProps: { size: 'xs', radius: 'xs' } },
     Card: {
       defaultProps: {
         shadow: 'xs',
@@ -166,12 +182,7 @@ export const EFFTheme =mergeThemeOverrides(baseTheme, createTheme({
         size: 'sm',
       },
     },
-    TextInput: {
-      defaultProps: {
-        radius: 'xs',
-        size: 'sm',
-      },
-    },
+
     Paper:{
       defaultProps: {
         withBorder:true

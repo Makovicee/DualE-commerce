@@ -16,3 +16,14 @@ body,
   display: flex;
   flex-direction: column;
 }
+
+@keyframes stepIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

@@ -1,5 +1,5 @@
 import { AppShell } from "@mantine/core";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useUIMode } from "../../contexts/UIModeContext";
 import ASTNavbar from "./ASTNavbar";
 import EFFCardFooter from "./EFFCardFooter";
@@ -7,6 +7,9 @@ import EFFNavbar from "./EFFNavbar";
 
 const AppLayout = () => {
   const { mode } = useUIMode();
+  const { pathname } = useLocation();
+
+  const showFooter = mode === "EFF" && pathname !== "/checkout";
 
   return (
     <AppShell
@@ -20,7 +23,7 @@ const AppLayout = () => {
       <AppShell.Main>
         <Outlet />
       </AppShell.Main>
-      {mode === "EFF" && (
+      {showFooter && (
         <AppShell.Footer withBorder>
           <EFFCardFooter />
         </AppShell.Footer>
