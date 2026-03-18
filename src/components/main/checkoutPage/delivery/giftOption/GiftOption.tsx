@@ -27,13 +27,13 @@ const GiftOption = () => {
     />
   );
   const messageInput = <Textarea label="Zpráva" autosize minRows={3} />;
-  const colorSwatches = (
+  const colorPicker = (
     <ColorPicker
       format="hex"
       swatches={["#e8a0a0", "#E8C97A"]}
       withPicker={false}
       swatchesPerRow={2}
-      style={{ "--cp-swatch-size": mode === "AST" ? "3.5rem" : "2.5rem" }}
+      style={{ "--cp-swatch-size": mode === "AST" ? "64px" : "32px" }}
     />
   );
 
@@ -48,7 +48,7 @@ const GiftOption = () => {
       <Divider />
       <Group wrap="nowrap" align="flex-end">
         {recipientSelect}
-        {colorSwatches}
+        {colorPicker}
       </Group>
       {messageInput}
     </Stack>
@@ -79,7 +79,7 @@ const GiftOption = () => {
             Darujte květiny těm na kterých vám opravdu záleží. Lorem ipsum dolor
             sit amet, consectetuer adipiscing elit.
           </Text>
-          {colorSwatches}
+          {colorPicker}
         </Stack>
       </Grid.Col>
     </Grid>

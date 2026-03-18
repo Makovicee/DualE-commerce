@@ -1,9 +1,12 @@
 import { Stack } from "@mantine/core";
+import CartItems from "./cartItems/CartItems";
+import Summary from "./summary/Summary";
 
 const Cart = () => {
   return (
-    <Stack gap={"xl"} px={"md"}>
-      Položky
+    <Stack h={"100%"} justify="space-between">
+      <CartItems />
+      <Summary />
     </Stack>
   );
 };
