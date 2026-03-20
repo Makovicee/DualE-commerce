@@ -1,4 +1,4 @@
-import { Group, Stack, Text } from "@mantine/core";
+import { Divider, Group, Stack, Text } from "@mantine/core";
 
 const ROWS = [
   { label: "Mezisoučet", value: "1293 Kč" },
@@ -19,6 +19,13 @@ const Summary = () => {
           </Text>
         </Group>
       ))}
+      <Divider />
+      <Group justify="space-between">
+        <Text fw={500} c="dimmed">
+          Celkem
+        </Text>
+        <Text fw={500}>1500 Kč</Text>
+      </Group>
     </Stack>
   );
 };
