@@ -1,14 +1,16 @@
 import { Box, Button, Group, Kbd, Stack, TextInput } from "@mantine/core";
 import { Home, Search } from "lucide-react";
-import { useState } from "react";
 import { useUIMode } from "../../contexts/UIModeContext";
 import AppLogo from "./AppLogo";
-
-const CATEGORIES = ["Kaktusy", "Růže", "Tropické", "Zimní"];
+import { useLocation, useNavigate } from "react-router-dom";
+import { CATEGORIES } from "../../core/data/categories";
 
 const EFFNavbar = () => {
-  const { toggle } = useUIMode();
-  const [active, setActive] = useState("Domů");
+  const { toggle, mode } = useUIMode();
+  const { pathname } = useLocation();
+  const active =
+    CATEGORIES.find((category) => category.path === pathname)?.id ?? "home";
+  const navigate = useNavigate();
 
   return (
     <Box>
@@ -24,23 +26,20 @@ const EFFNavbar = () => {
           />
 
           <Group mt="xs" gap="md">
-            <Button
-              variant={active === "Domů" ? "filled" : "light"}
-              style={{ borderTopRightRadius: 4, borderTopLeftRadius: 4 }}
-              onClick={() => setActive("Domů")}
-              mr={"10vw"}
-            >
-              <Home size={22} />
-            </Button>
             {CATEGORIES.map((category) => (
               <Button
-                key={category}
-                flex={1}
-                variant={active === category ? "filled" : "light"}
+                key={category.id}
+                flex={category.id === "home" ? undefined : 1}
+                variant={active === category.id ? "filled" : "light"}
                 style={{ borderTopRightRadius: 4, borderTopLeftRadius: 4 }}
-                onClick={() => setActive(category)}
+                onClick={() => navigate(category.path)}
+                mr={category.id === "home" ? "10vw" : undefined}
               >
-                {category}
+                {category.id === "home" ? (
+                  <Home size={22} />
+                ) : (
+                  category.labels[mode]
+                )}
               </Button>
             ))}
           </Group>
