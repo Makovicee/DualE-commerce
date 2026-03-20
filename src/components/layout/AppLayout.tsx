@@ -15,7 +15,7 @@ const AppLayout = () => {
     <AppShell
       withBorder={false}
       header={{ height: 108 }}
-      footer={mode === "EFF" ? { height: 100 } : undefined}
+      footer={showFooter ? { height: 100 } : undefined}
     >
       <AppShell.Header px={0}>
         {mode === "EFF" ? <EFFNavbar /> : <ASTNavbar />}

@@ -11,20 +11,22 @@ const Summary = () => {
     <Stack>
       {ROWS.map(({ label, value, color }) => (
         <Group key={label} justify="space-between">
-          <Text fw={500} c="dimmed">
+          <Text size="xs" fw={500} c="dimmed">
             {label}
           </Text>
-          <Text fw={500} c={color}>
+          <Text size="xs" fw={500} c={color}>
             {value}
           </Text>
         </Group>
       ))}
       <Divider />
       <Group justify="space-between">
-        <Text fw={500} c="dimmed">
+        <Text size="xs" fw={500} c="dimmed">
           Celkem
         </Text>
-        <Text fw={500}>1500 Kč</Text>
+        <Text size="xs" fw={500}>
+          1500 Kč
+        </Text>
       </Group>
     </Stack>
   );

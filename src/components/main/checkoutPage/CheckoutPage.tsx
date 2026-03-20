@@ -59,7 +59,10 @@ const CheckoutPage = () => {
   };
 
   return mode === "EFF" ? (
-    <SimpleGrid mt="xl" cols={3}>
+    <SimpleGrid
+      h="calc(100dvh - var(--app-shell-header-height) - var(--mantine-spacing-xl) * 2)"
+      cols={3}
+    >
       {EFF_ORDER.map((item, i) => (
         <Box key={i} px="xl">
           <Text ta="center" size="md" fw={500} c="dimmed">
@@ -117,6 +120,7 @@ const CheckoutPage = () => {
           color="grape"
           onClick={() => handleStepClick(active + 1)}
           disabled={active === STEPS.length}
+          size="lg"
           rightSection={
             active === STEPS.length - 1 ? (
               <Check size={22} />
