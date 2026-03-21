@@ -1,6 +1,7 @@
 import {
   ActionIcon,
   AspectRatio,
+  Button,
   Chip,
   Drawer,
   Grid,
@@ -13,21 +14,30 @@ import {
   UnstyledButton,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { Flower } from "lucide-react";
+import { ArrowRight, Flower } from "lucide-react";
 import { useUIMode } from "../../../../../contexts/UIModeContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CATEGORIES } from "../../../../../core/data/categories";
+import type {
+  FilterControlProps,
+  SortBy,
+} from "../../../../../core/logic/useProductFilter";
+import { STAT_NAMES, type StatValue } from "../../../../../core/data/products";
 
-const FILTERS = ["Hydratace", "Světlo", "Toxicita"];
-
-interface FilterOverlayProps {
+interface FilterOverlayProps extends FilterControlProps {
   size?: "input-sm" | "input-xl";
 }
 
-const FilterOverlay = ({ size = "input-xl" }: FilterOverlayProps) => {
+const FilterOverlay = ({
+  size = "input-xl",
+  filters,
+  setStatFilter,
+  setOnSortBy,
+}: FilterOverlayProps) => {
   const [opened, { open, close }] = useDisclosure(false);
   const { mode } = useUIMode();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
+
   const navigate = useNavigate();
   const active =
     CATEGORIES.find((category) => category.path === pathname)?.id ?? "home";
@@ -75,7 +85,7 @@ const FilterOverlay = ({ size = "input-xl" }: FilterOverlayProps) => {
                       )}
                       <UnstyledButton
                         onClick={() => {
-                          navigate(category.path);
+                          navigate(category.path + search);
                           close();
                         }}
                       >
@@ -115,27 +125,51 @@ const FilterOverlay = ({ size = "input-xl" }: FilterOverlayProps) => {
 
           <Tabs defaultValue="Hydratace" mt="lg">
             <Tabs.List>
-              {FILTERS.map((filter) => (
-                <Tabs.Tab key={filter} value={filter}>
-                  {filter}
+              {STAT_NAMES.map((stat) => (
+                <Tabs.Tab key={stat} value={stat}>
+                  {stat}
                 </Tabs.Tab>
               ))}
             </Tabs.List>
 
-            {FILTERS.map((filter) => (
-              <Tabs.Panel key={filter} value={filter} pt="sm">
-                <Group justify="space-between" wrap="nowrap" align="flex-end">
-                  <Chip.Group>
-                    <Group gap="sm" wrap="wrap">
-                      <Chip value="low">Nízká</Chip>
-                      <Chip value="medium">Střední</Chip>
-                      <Chip value="high">Vysoká</Chip>
+            {STAT_NAMES.map((stat) => (
+              <Tabs.Panel key={stat} value={stat} pt="sm">
+                <Group justify="space-between" wrap="nowrap" align="center">
+                  <Chip.Group
+                    multiple
+                    value={filters[stat] ? [String(filters[stat])] : []}
+                    onChange={(value) =>
+                      setStatFilter(
+                        stat,
+                        value.length
+                          ? (Number(value[value.length - 1]) as StatValue)
+                          : null,
+                      )
+                    }
+                  >
+                    <Group gap="sm">
+                      <Chip value="1">Nízká</Chip>
+                      <Chip value="2">Střední</Chip>
+                      <Chip value="3">Vysoká</Chip>
                     </Group>
                   </Chip.Group>
+                  <Button
+                    rightSection={<ArrowRight />}
+                    onClick={close}
+                    size="lg"
+                    color="grape"
+                  >
+                    Zobrazit
+                  </Button>
                   <Select
                     label="Řadit dle"
-                    defaultValue="Doporučeno"
-                    data={["Doporučeno", "Nejnovější"]}
+                    value={filters.sortBy}
+                    onChange={(v) => setOnSortBy(v as SortBy)}
+                    data={[
+                      { value: "price_asc", label: "Cena vzestupně" },
+                      { value: "price_desc", label: "Cena sestupně" },
+                    ]}
+                    clearable
                   />
                 </Group>
               </Tabs.Panel>

@@ -4,9 +4,11 @@ import SearchTools from "./searchTools/SearchTools";
 
 import { Flower } from "lucide-react";
 import SpecialOffers from "./specialOffers/SpecialOffers";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const { mode } = useUIMode();
+  const navigate = useNavigate();
   return (
     <>
       {mode === "AST" && (
@@ -26,8 +28,12 @@ const HomePage = () => {
       </Center>
       {mode === "AST" && (
         <Stack my="xl" align="center" justify="center" gap={0}>
-          <ActionIcon variant="transparent" size={"input-xl"}>
-            <Flower size={40} />
+          <ActionIcon
+            onClick={() => navigate("/listing")}
+            variant="transparent"
+            size={"input-xl"}
+          >
+            <Flower size={60} />
           </ActionIcon>
           <Text fw={"bold"} ta={"center"}>
             Odhalit více

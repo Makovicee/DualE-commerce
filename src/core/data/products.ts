@@ -2,7 +2,8 @@ import type { CategoryId } from "./categories";
 
 
 
-export type StatName = "Hydratace" | "Světlo" | "Toxicita";
+export const STAT_NAMES = ["Hydratace", "Světlo", "Toxicita"] as const;
+export type StatName = typeof STAT_NAMES[number];
 export type StatValue = 1 | 2 | 3;
 export type VariantSize = "S" | "M" | "XL";
 

@@ -7,7 +7,8 @@ import { CATEGORIES } from "../../core/data/categories";
 
 const EFFNavbar = () => {
   const { toggle, mode } = useUIMode();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
+
   const active =
     CATEGORIES.find((category) => category.path === pathname)?.id ?? "home";
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ const EFFNavbar = () => {
                 flex={category.id === "home" ? undefined : 1}
                 variant={active === category.id ? "filled" : "light"}
                 style={{ borderTopRightRadius: 4, borderTopLeftRadius: 4 }}
-                onClick={() => navigate(category.path)}
+                onClick={() => navigate(category.path + search)}
                 mr={category.id === "home" ? "10vw" : undefined}
               >
                 {category.id === "home" ? (

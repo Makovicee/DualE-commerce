@@ -1,8 +1,7 @@
 import { ActionIcon, Group, Indicator, Stack, Text } from "@mantine/core";
-import { Home, ShoppingCart } from "lucide-react";
+import { Flower, Home, ShoppingCart } from "lucide-react";
 import { useUIMode } from "../../contexts/UIModeContext";
 import AppLogo from "./AppLogo";
-import FilterOverlay from "../main/listingPage/filter/filterOverlay/FilterOverlay";
 import { useNavigate } from "react-router-dom";
 
 const ASTNavbar = () => {
@@ -25,7 +24,13 @@ const ASTNavbar = () => {
             <Text size="sm">Domů</Text>
           </Stack>
           <Stack gap={0} align="center">
-            <FilterOverlay size="input-sm" />
+            <ActionIcon
+              onClick={() => navigate("/listing")}
+              variant="transparent"
+              size={"input-sm"}
+            >
+              <Flower size={26} />
+            </ActionIcon>
             <Text size="sm">Kolekce</Text>
           </Stack>
         </Group>

@@ -2,13 +2,22 @@ import { Group, Stack, Title, Text } from "@mantine/core";
 import { useUIMode } from "../../../../contexts/UIModeContext";
 import FilterOverlay from "./filterOverlay/FilterOverlay";
 import FilterBox from "./filterBox/FilterBox";
+import type { FilterControlProps } from "../../../../core/logic/useProductFilter";
 
-const Filter = () => {
+const Filter = ({
+  filters,
+  setStatFilter,
+  setOnSortBy,
+}: FilterControlProps) => {
   const { mode } = useUIMode();
   return (
     <>
       {mode === "EFF" ? (
-        <FilterBox />
+        <FilterBox
+          filters={filters}
+          setStatFilter={setStatFilter}
+          setOnSortBy={setOnSortBy}
+        />
       ) : (
         <Group justify="space-between">
           <Stack gap={"xs"} w={"35%"}>
@@ -22,7 +31,11 @@ const Filter = () => {
               quibusdam tenetur. Facilis, ab!
             </Text>
           </Stack>
-          <FilterOverlay />
+          <FilterOverlay
+            filters={filters}
+            setStatFilter={setStatFilter}
+            setOnSortBy={setOnSortBy}
+          />
         </Group>
       )}
     </>

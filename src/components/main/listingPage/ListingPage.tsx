@@ -3,19 +3,24 @@ import { useUIMode } from "../../../contexts/UIModeContext";
 import Filter from "./filter/Filter";
 import ProductCollection from "./productCollection/ProductCollection";
 import { useParams } from "react-router-dom";
-import { PRODUCTS } from "../../../core/data/products";
 import type { CategoryId } from "../../../core/data/categories";
+import { useProductFilter } from "../../../core/logic/useProductFilter";
 
 const ListingPage = () => {
   const { mode } = useUIMode();
   const { category } = useParams<{ category: CategoryId }>();
 
-  const filteredProducts = category
-    ? PRODUCTS.filter((p) => p.categoryId === category)
-    : PRODUCTS;
+  const { filters, setStatFilter, setSortBy, filteredProducts } =
+    useProductFilter(category);
 
   const productCollection = <ProductCollection products={filteredProducts} />;
-  const filter = <Filter />;
+  const filter = (
+    <Filter
+      filters={filters}
+      setStatFilter={setStatFilter}
+      setOnSortBy={setSortBy}
+    />
+  );
 
   return (
     <Box p="xl">
