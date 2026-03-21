@@ -13,14 +13,19 @@ import {
 import { useUIMode } from "../../../../../contexts/UIModeContext";
 import { useHover } from "@mantine/hooks";
 import ProductInfo from "./ProductInfo";
+import type { Product } from "../../../../../core/data/products";
 
-const ProductCard = () => {
+interface ProductCardProps {
+  product: Product;
+}
+
+const ProductCard = ({ product }: ProductCardProps) => {
   const { mode } = useUIMode();
   const { hovered, ref } = useHover();
 
   const image = (
     <Image
-      src={null}
+      src={product.img}
       fallbackSrc="https://placehold.co/200x200"
       h={mode === "EFF" ? 64 : "100%"}
       w={mode === "EFF" ? 64 : "100%"}
@@ -29,44 +34,28 @@ const ProductCard = () => {
 
   const title = (
     <Text size="lg" fw={500}>
-      Cactus Inabae
+      {product.name}
     </Text>
   );
 
-  const priceLabel = (
-    <Text size="sm" fw={700}>
-      75.00 Kč
-    </Text>
+  const ratingStars = (
+    <Rating value={product.rating} fractions={2} readOnly size="sm" />
   );
 
-  const ratingStars = <Rating value={3.5} fractions={2} readOnly size="sm" />;
-
-  const effNumberInput = (
-    <NumberInput
-      fw={500}
-      styles={{ input: { textAlign: "center" } }}
-      stepHoldDelay={500}
-      stepHoldInterval={100}
-      suffix=" ks"
-      size="sm"
-      allowDecimal={false}
-      allowNegative={false}
-      defaultValue={0}
-      min={0}
-      labelProps={{ style: { width: "100%" } }}
-      label={
-        <Group w="100%" justify="space-between">
-          <Text fw={500}>
-            S{" "}
-            <Text size="xs" span c="dimmed">
-              (15cm)
-            </Text>
-          </Text>
-          {priceLabel}
-        </Group>
-      }
-    />
+  //EFF specific
+  const totalStock = Object.values(product.variants).reduce(
+    (acc, v) => acc + v.stock,
+    0,
   );
+  const [stockStatus, stockColor] =
+    totalStock === 0
+      ? ["Vyprodáno", "red"]
+      : totalStock < 30
+        ? ["Nízká zásoba", "yellow"]
+        : ["Vysoká zásoba", "green"];
+  const stockCounts = Object.values(product.variants)
+    .map((v) => v.stock)
+    .join(" / ");
 
   return (
     <Card p={mode === "AST" ? 0 : "md"}>
@@ -76,26 +65,55 @@ const ProductCard = () => {
             {image}
             <Stack gap={0}>
               <Text size="xs" c="dimmed">
-                #012GR
+                {product.id}
               </Text>
               {title}
               {ratingStars}
             </Stack>
             <Stack gap={"xs"} ml={"10%"}>
-              <Badge color="green" variant="light">
-                Vysoká zásoba
+              <Badge color={stockColor} variant="light">
+                {stockStatus}
               </Badge>
-              <Text ta={"center"} size="xs" c="dimmed">
-                0 / 0 / 0
+              <Text ta="center" size="xs" c="dimmed">
+                {stockCounts}
               </Text>
             </Stack>
           </Group>
 
           <Group gap={"xl"} wrap="nowrap">
-            {effNumberInput}
-            {effNumberInput}
-            {effNumberInput}
-            <ProductInfo />
+            {Object.values(product.variants).map((variant) => (
+              <NumberInput
+                fw={500}
+                styles={{ input: { textAlign: "center" } }}
+                stepHoldDelay={500}
+                stepHoldInterval={100}
+                suffix=" ks"
+                size="sm"
+                disabled={variant.stock === 0}
+                allowDecimal={false}
+                allowNegative={false}
+                defaultValue={0}
+                min={0}
+                labelProps={{ style: { width: "100%" } }}
+                label={
+                  <Group
+                    c={variant.stock === 0 ? "dimmed" : "black"}
+                    w="100%"
+                    justify="space-between"
+                  >
+                    <Text fw={500}>
+                      {variant.size}{" "}
+                      <Text size="xs" span c="dimmed">
+                        ({variant.sizeLabel})
+                      </Text>
+                    </Text>
+                    {variant.price.toFixed(2)} Kč
+                  </Group>
+                }
+              />
+            ))}
+
+            <ProductInfo product={product} />
           </Group>
         </Group>
       ) : (
@@ -126,7 +144,14 @@ const ProductCard = () => {
                       <Text c="dimmed" size="sm">
                         Od
                       </Text>
-                      {priceLabel}
+                      <Text fw={700}>
+                        {Math.min(
+                          ...Object.values(product.variants).map(
+                            (v) => v.price,
+                          ),
+                        )}{" "}
+                        Kč
+                      </Text>
                     </Stack>
                   </Group>
                 </Paper>

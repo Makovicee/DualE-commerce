@@ -1,19 +1,22 @@
 import {
   ActionIcon,
+  Box,
   Divider,
   Grid,
   Group,
   HoverCard,
-  Progress,
   Rating,
   Stack,
   Text,
 } from "@mantine/core";
 import { Info } from "lucide-react";
+import type { Product } from "../../../../../core/data/products";
 
-const STATS = ["Hydratace", "Světlo", "Toxicita"];
+interface ProductInfoProps {
+  product: Product;
+}
 
-const ProductInfo = () => {
+const ProductInfo = ({ product }: ProductInfoProps) => {
   return (
     <HoverCard width={750} transitionProps={{ duration: 0 }}>
       <HoverCard.Target>
@@ -23,37 +26,41 @@ const ProductInfo = () => {
       </HoverCard.Target>
       <HoverCard.Dropdown p={"xl"}>
         <Group justify="space-between">
-          <Stack w={"60%"}>
-            {STATS.map((stat) => (
+          <Stack w="60%">
+            {Object.entries(product.stats).map(([stat, value]) => (
               <Grid key={stat} align="center">
-                <Grid.Col span={3}>
-                  <Text c="dimmed">{stat}</Text>
-                </Grid.Col>
-
-                <Grid.Col span={6}>
-                  <Progress size={"lg"} value={75} />
-                </Grid.Col>
-
-                <Grid.Col span={2}>
-                  <Text fw={500} ta="right">
-                    75 %
+                <Grid.Col span={4}>
+                  <Text fw={500} c="black">
+                    {stat}{" "}
+                    <Text span c="dimmed" fw={600}>
+                      ({value})
+                    </Text>
                   </Text>
+                </Grid.Col>
+                <Grid.Col span={7}>
+                  <Group gap={"sm"}>
+                    {[1, 2, 3].map((i) => (
+                      <Box
+                        key={i}
+                        h={12}
+                        flex={1}
+                        bg={i <= value ? "dark" : "gray.3"}
+                        style={{ borderRadius: "var(--mantine-radius-xs)" }}
+                      />
+                    ))}
+                  </Group>
                 </Grid.Col>
               </Grid>
             ))}
           </Stack>
 
           <Stack>
-            <Rating value={3.5} fractions={2} readOnly size="lg" />
-            <Text>4.6 / 5</Text>
+            <Rating value={product.rating} fractions={2} readOnly size="lg" />
+            <Text>{product.rating} / 5</Text>
           </Stack>
         </Group>
         <Divider my={"sm"} />
-        <Text c={"dimmed"}>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consectetur
-          impedit, dolorem architecto harum maiores odit corrupti qui omnis, sed
-          sunt placeat nihil vitae alias a aperiam saepe, amet at laborum!
-        </Text>
+        <Text c={"dimmed"}>{product.description}</Text>
       </HoverCard.Dropdown>
     </HoverCard>
   );

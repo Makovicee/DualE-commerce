@@ -64,31 +64,33 @@ const FilterOverlay = ({ size = "input-xl" }: FilterOverlayProps) => {
           <Grid flex={1} gutter="xl">
             <Grid.Col span={{ base: 12, md: 6 }}>
               <Stack gap="md">
-                {CATEGORIES.map((category) => (
-                  <Group align="baseline" gap={"xs"} key={category.id}>
-                    {active === category.id && (
-                      <category.icon
-                        size={40}
-                        color="var(--mantine-color-grape-6)"
-                      />
-                    )}
-                    <UnstyledButton
-                      onClick={() => {
-                        navigate(category.path);
-                        close();
-                      }}
-                    >
-                      <Title
-                        order={active === category.id ? 1 : 2}
-                        fs="italic"
-                        fw={500}
-                        c={active === category.id ? "dark" : "dimmed"}
+                {CATEGORIES.filter((category) => category.id !== "home").map(
+                  (category) => (
+                    <Group align="baseline" gap={"xs"} key={category.id}>
+                      {active === category.id && (
+                        <category.icon
+                          size={40}
+                          color="var(--mantine-color-grape-6)"
+                        />
+                      )}
+                      <UnstyledButton
+                        onClick={() => {
+                          navigate(category.path);
+                          close();
+                        }}
                       >
-                        {category.labels[mode]}
-                      </Title>
-                    </UnstyledButton>
-                  </Group>
-                ))}
+                        <Title
+                          order={active === category.id ? 1 : 2}
+                          fs="italic"
+                          fw={500}
+                          c={active === category.id ? "dark" : "dimmed"}
+                        >
+                          {category.labels[mode]}
+                        </Title>
+                      </UnstyledButton>
+                    </Group>
+                  ),
+                )}
               </Stack>
             </Grid.Col>
 

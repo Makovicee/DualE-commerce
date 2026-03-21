@@ -1,9 +1,18 @@
 import { ScrollArea, SimpleGrid, Stack } from "@mantine/core";
 import { useUIMode } from "../../../../contexts/UIModeContext";
 import ProductCard from "./productCard/ProductCard";
+import type { Product } from "../../../../core/data/products";
 
-const ProductCollection = () => {
+interface ProductCollectionProps {
+  products: Product[];
+}
+
+const ProductCollection = ({ products }: ProductCollectionProps) => {
   const { mode } = useUIMode();
+
+  const productCards = products.map((product) => (
+    <ProductCard key={product.id} product={product} />
+  ));
 
   return (
     <>
@@ -12,18 +21,10 @@ const ProductCollection = () => {
           offsetScrollbars
           h="calc(100dvh - var(--app-shell-header-height) - var(--app-shell-footer-height, 0px) - var(--mantine-spacing-xl) * 2)"
         >
-          <Stack>
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-          </Stack>
+          <Stack>{productCards}</Stack>
         </ScrollArea>
       ) : (
-        <SimpleGrid cols={4}>
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-        </SimpleGrid>
+        <SimpleGrid cols={4}>{productCards}</SimpleGrid>
       )}
     </>
   );
