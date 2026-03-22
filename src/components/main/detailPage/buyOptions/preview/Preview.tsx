@@ -8,17 +8,36 @@ import {
   ActionIcon,
 } from "@mantine/core";
 import { ShoppingBasket } from "lucide-react";
+import type { Product, VariantSize } from "../../../../../core/data/products";
 
-const Preview = () => {
+interface PreviewProps {
+  product: Product;
+  selectedVariant: VariantSize;
+}
+
+const SIZE_MAP: Record<VariantSize, number> = {
+  S: 230,
+  M: 280,
+  XL: 330,
+};
+
+const Preview = ({ product, selectedVariant }: PreviewProps) => {
+  const variant = product.variants[selectedVariant];
+  const imageSize = SIZE_MAP[selectedVariant];
+
   return (
     <Card flex={1} withBorder>
       <Card.Section flex={1} withBorder p={"md"}>
         <Center h={"100%"}>
           <Image
-            src={null}
+            src={product.img}
             fallbackSrc="https://placehold.co/300x300"
-            h={300}
-            w={300}
+            h={imageSize}
+            w={imageSize}
+            style={{
+              transition: "all 500ms ease-in-out",
+              transform: `rotate(${selectedVariant === "S" ? -15 : selectedVariant === "XL" ? 15 : 0}deg)`,
+            }}
           />
         </Center>
       </Card.Section>
@@ -26,10 +45,7 @@ const Preview = () => {
         <Group justify="flex-end" gap="md">
           <Stack align="flex-end" gap={0}>
             <Text fw={700} size="xl">
-              149 Kč
-            </Text>
-            <Text td="line-through" c="dimmed">
-              75 Kč
+              {variant.price} Kč
             </Text>
           </Stack>
           <ActionIcon color={"grape"} size={"input-xl"}>

@@ -21,7 +21,7 @@ const AppLayout = () => {
         {mode === "EFF" ? <EFFNavbar /> : <ASTNavbar />}
       </AppShell.Header>
       <AppShell.Main>
-        <Outlet />
+        <Outlet key={pathname} />
       </AppShell.Main>
       {showFooter && (
         <AppShell.Footer withBorder>

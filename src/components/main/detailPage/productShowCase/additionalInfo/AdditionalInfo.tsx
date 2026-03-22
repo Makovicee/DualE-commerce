@@ -9,43 +9,33 @@ import {
   Text,
 } from "@mantine/core";
 import { MessageCircleMore } from "lucide-react";
+import type { Product } from "../../../../../core/data/products";
 
-const AdditionalInfo = () => {
+const AdditionalInfo = ({ product }: { product: Product }) => {
   return (
     <Paper>
       <Group align="stretch" wrap="nowrap">
         <Stack flex={1}>
-          <Rating value={3.5} fractions={2} readOnly size="xl" />
+          <Rating value={product.rating} fractions={2} readOnly size="xl" />
           <Text size="lg" fw={500}>
-            4.6 / 5
+            {product.rating} / 5
           </Text>
-          <Text>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in
-            dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed
-            auctor neque eu tellus rhoncus ut eleifend nibh porttitor. Ut in
-            nulla enim. Phasellus molestie magna non est bibendum non venenatis
-            nisl tempor. Suspendisse dictum feugiat nisl ut dapibus. Mauris
-            iaculis porttitor posuere. Praesent id metus massa, ut blandit odio.
-            Proin quis tortor
-          </Text>
+          <Text>{product.description}</Text>
         </Stack>
 
         <Divider orientation="vertical" />
         <ScrollArea offsetScrollbars flex={1} h={350}>
           <Stack gap="md" pl="md">
-            {[1, 2, 3].map((i) => (
+            {product.comments?.map((comment) => (
               <Blockquote
-                key={i}
+                key={comment.id}
                 color="astGreen.8"
-                cite="–Don Juan"
+                cite={`–${comment.author}`}
                 iconSize={60}
                 icon={<MessageCircleMore size={30} />}
                 mt="xl"
               >
-                <Text fs="italic">
-                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                  Curabitur ligula sapien, pulvinar.
-                </Text>
+                <Text fs="italic">{comment.content}</Text>
               </Blockquote>
             ))}
           </Stack>

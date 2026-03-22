@@ -14,6 +14,7 @@ import { useUIMode } from "../../../../../contexts/UIModeContext";
 import { useHover } from "@mantine/hooks";
 import ProductInfo from "./ProductInfo";
 import type { Product } from "../../../../../core/data/products";
+import { useNavigate } from "react-router-dom";
 
 interface ProductCardProps {
   product: Product;
@@ -22,6 +23,7 @@ interface ProductCardProps {
 const ProductCard = ({ product }: ProductCardProps) => {
   const { mode } = useUIMode();
   const { hovered, ref } = useHover();
+  const navigate = useNavigate();
 
   const image = (
     <Image
@@ -117,7 +119,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
           </Group>
         </Group>
       ) : (
-        <Stack gap="xs" style={{ cursor: "pointer" }}>
+        <Stack
+          gap="xs"
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            window.scrollTo(0, 0);
+            navigate(`/detail/${product.id}`);
+          }}
+        >
           <div ref={ref} style={{ position: "relative" }}>
             {image}
             <Transition mounted={hovered} transition="fade" duration={1000}>
