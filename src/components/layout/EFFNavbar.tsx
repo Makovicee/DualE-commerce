@@ -4,10 +4,29 @@ import { useUIMode } from "../../contexts/UIModeContext";
 import AppLogo from "./AppLogo";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CATEGORIES } from "../../core/data/categories";
+import { useRef } from "react";
+import { useHotkeys } from "@mantine/hooks";
 
 const EFFNavbar = () => {
   const { toggle, mode } = useUIMode();
   const { pathname, search } = useLocation();
+  const searchRef = useRef<HTMLInputElement>(null);
+
+  useHotkeys([
+    [
+      "mod+k",
+      () => {
+        if (pathname === "/") return;
+        searchRef.current?.focus();
+      },
+    ],
+  ]);
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Escape") {
+      searchRef.current?.blur();
+    }
+  };
 
   const active =
     CATEGORIES.find((category) => category.path === pathname)?.id ?? "home";
@@ -19,9 +38,11 @@ const EFFNavbar = () => {
         <AppLogo onClick={toggle} />
         <Stack flex={1}>
           <TextInput
+            ref={searchRef}
+            onKeyDown={handleKeyDown}
             placeholder="Hledat dle ID, Názvu, Popisu"
             leftSection={<Search size={16} />}
-            rightSection={<Kbd>⌘ + K</Kbd>}
+            rightSection={pathname !== "/" && <Kbd>⌘ + K</Kbd>}
             rightSectionWidth={70}
             flex={1}
           />

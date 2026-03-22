@@ -1,19 +1,28 @@
 import { Badge, Group } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
+
+const TAGS = [
+  { label: "Nenáročné", path: "/listing?hydratace=1" },
+  { label: "Přímé slunce", path: "/listing?svetlo=3" },
+  { label: "Netoxické", path: "/listing?toxicita=1" },
+  { label: "Levné", path: "/listing?sort=price_asc" },
+];
 
 const PopularTagsGroup = () => {
-  const tags = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"];
+  const navigate = useNavigate();
 
   return (
     <Group>
-      {tags.map((tag) => (
+      {TAGS.map((tag) => (
         <Badge
-          p={"md"}
+          key={tag.label}
+          p="md"
           size="md"
           style={{ cursor: "pointer" }}
           variant="light"
-          key={tag}
+          onClick={() => navigate(tag.path)}
         >
-          #{tag}
+          #{tag.label}
         </Badge>
       ))}
     </Group>

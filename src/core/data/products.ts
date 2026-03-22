@@ -31,6 +31,7 @@ export interface Product {
   variants: Record<VariantSize, ProductVariant>;
   stats: Record<StatName, StatValue>;
   comments?: ProductComment[];
+  launchDate:Date
 }
 
 export const PRODUCTS: Product[] = [
@@ -51,6 +52,7 @@ export const PRODUCTS: Product[] = [
       { id: "c1", author: "Jan Novák", content: "Skvělá rostlina, velmi odolná. Doporučil bych každému milovníkovi zeleně." },
       { id: "c2", author: "Marie Svobodová", content: "Krásná, doporučuji každému začátečníkovi." },
     ],
+    launchDate: new Date("2024-05-15")
   },
   {
     id: "XZR12f",
@@ -69,6 +71,6 @@ export const PRODUCTS: Product[] = [
       { id: "c1", author: "Jan Novák", content: "Skvělá rostlina, velmi odolná. Doporučil bych každému milovníkovi zeleně." },
       { id: "c2", author: "Marie Svobodová", content: "Krásná, doporučuji každému začátečníkovi." },
     ],
+    launchDate: new Date("2024-05-16")
   },
-
 ]
