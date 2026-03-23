@@ -20,7 +20,7 @@ export const useAutocompleteRender = (): AutocompleteProps["renderOption"] => {
       totalStock === 0
         ? [X, "red"]
         : totalStock < 30
-          ? [Minus, "yellow"]
+          ? [Minus, "orange"]
           : [Check, "green"];
 
     const variantPrices = Object.values(product.variants)

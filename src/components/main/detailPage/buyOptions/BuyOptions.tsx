@@ -5,7 +5,7 @@ import Preview from "./preview/Preview";
 import type { Product, VariantSize } from "../../../../core/data/products";
 
 const BuyOptions = ({ product }: { product: Product }) => {
-  const [value, setValue] = useState<VariantSize>("S");
+  const [value, setValue] = useState<VariantSize>("M");
 
   return (
     <Center>

@@ -1,4 +1,4 @@
-import { ScrollArea, SimpleGrid, Stack } from "@mantine/core";
+import { Center, ScrollArea, SimpleGrid, Stack, Text } from "@mantine/core";
 import { useUIMode } from "../../../../contexts/UIModeContext";
 import ProductCard from "./productCard/ProductCard";
 import type { Product } from "../../../../core/data/products";
@@ -9,6 +9,16 @@ interface ProductCollectionProps {
 
 const ProductCollection = ({ products }: ProductCollectionProps) => {
   const { mode } = useUIMode();
+
+  if (products.length === 0) {
+    return (
+      <Center h={200}>
+        <Text c="dimmed" size="lg">
+          Žadné produkty neodpovídají vašim kritériím.
+        </Text>
+      </Center>
+    );
+  }
 
   const productCards = products.map((product) => (
     <ProductCard key={product.id} product={product} />
