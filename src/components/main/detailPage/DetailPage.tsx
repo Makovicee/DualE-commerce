@@ -27,7 +27,7 @@ const DetailPage = () => {
     );
   return (
     <Stack gap={"xl"} mb={"xl"}>
-      <ProductShowCase product={product} />
+      <ProductShowCase key={product.id} product={product} />
       <Recommended />
       <BuyOptions product={product} />
     </Stack>
