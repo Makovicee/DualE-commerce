@@ -1,6 +1,7 @@
 import {
   Badge,
   Card,
+  Grid,
   Group,
   Image,
   NumberInput,
@@ -62,17 +63,21 @@ const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <Card p={mode === "AST" ? 0 : "md"}>
       {mode === "EFF" ? (
-        <Group wrap="nowrap" justify="space-between">
-          <Group wrap="nowrap" gap={"xl"} w={"35%"}>
-            {image}
-            <Stack gap={0}>
-              <Text size="xs" c="dimmed">
-                {product.id}
-              </Text>
-              {title}
-              {ratingStars}
-            </Stack>
-            <Stack gap={"xs"} ml={"10%"}>
+        <Grid align="center">
+          <Grid.Col span={2}>
+            <Group wrap="nowrap" gap="xl">
+              {image}
+              <Stack gap={0}>
+                <Text size="xs" c="dimmed">
+                  {product.id}
+                </Text>
+                {title}
+                {ratingStars}
+              </Stack>
+            </Group>
+          </Grid.Col>
+          <Grid.Col span={3}>
+            <Stack gap="xs" align="center">
               <Badge color={stockColor} variant="light">
                 {stockStatus}
               </Badge>
@@ -80,44 +85,45 @@ const ProductCard = ({ product }: ProductCardProps) => {
                 {stockCounts}
               </Text>
             </Stack>
-          </Group>
-
-          <Group gap={"xl"} wrap="nowrap">
-            {Object.values(product.variants).map((variant) => (
-              <NumberInput
-                fw={500}
-                styles={{ input: { textAlign: "center" } }}
-                stepHoldDelay={500}
-                stepHoldInterval={100}
-                suffix=" ks"
-                size="sm"
-                disabled={variant.stock === 0}
-                allowDecimal={false}
-                allowNegative={false}
-                defaultValue={0}
-                min={0}
-                labelProps={{ style: { width: "100%" } }}
-                label={
-                  <Group
-                    c={variant.stock === 0 ? "dimmed" : "black"}
-                    w="100%"
-                    justify="space-between"
-                  >
-                    <Text fw={500}>
-                      {variant.size}{" "}
-                      <Text size="xs" span c="dimmed">
-                        ({variant.sizeLabel})
+          </Grid.Col>
+          <Grid.Col span={7}>
+            <Group gap="xl" wrap="nowrap" justify="flex-end">
+              {Object.values(product.variants).map((variant) => (
+                <NumberInput
+                  fw={500}
+                  styles={{ input: { textAlign: "center" } }}
+                  stepHoldDelay={500}
+                  stepHoldInterval={100}
+                  suffix=" ks"
+                  size="sm"
+                  disabled={variant.stock === 0}
+                  allowDecimal={false}
+                  allowNegative={false}
+                  defaultValue={0}
+                  min={0}
+                  labelProps={{ style: { width: "100%" } }}
+                  label={
+                    <Group
+                      c={variant.stock === 0 ? "dimmed" : "black"}
+                      w="100%"
+                      justify="space-between"
+                    >
+                      <Text fw={500}>
+                        {variant.size}{" "}
+                        <Text size="xs" span c="dimmed">
+                          ({variant.sizeLabel})
+                        </Text>
                       </Text>
-                    </Text>
-                    {variant.price.toFixed(2)} Kč
-                  </Group>
-                }
-              />
-            ))}
+                      {variant.price.toFixed(2)} Kč
+                    </Group>
+                  }
+                />
+              ))}
 
-            <ProductInfo product={product} />
-          </Group>
-        </Group>
+              <ProductInfo product={product} />
+            </Group>
+          </Grid.Col>
+        </Grid>
       ) : (
         <Stack
           gap="xs"

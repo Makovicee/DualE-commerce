@@ -51,6 +51,13 @@ const EFFNavbar = () => {
             rightSection={pathname !== "/" && <Kbd>⌘ + K</Kbd>}
             rightSectionWidth={70}
             flex={1}
+            onOptionSubmit={(value) => {
+              const product = PRODUCTS.find((p) => p.id === value);
+              navigate(`/listing/${product?.categoryId}`, {
+                state: { highlightId: value },
+              });
+              searchRef.current?.blur();
+            }}
           />
 
           <Group mt="xs" gap="md">

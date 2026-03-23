@@ -6,10 +6,12 @@ import { useRef } from "react";
 import { useHotkeys } from "@mantine/hooks";
 import { useAutocompleteRender } from "./autocompleteRender/AutocompleteRender";
 import { PRODUCTS } from "../../../../core/data/products";
+import { useNavigate } from "react-router-dom";
 
 const SearchTools = () => {
   const searchRef = useRef<HTMLInputElement>(null);
   const renderOption = useAutocompleteRender();
+  const navigate = useNavigate();
   useHotkeys([["mod+k", () => searchRef.current?.focus()]]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -32,6 +34,13 @@ const SearchTools = () => {
         leftSection={<Search size={20} />}
         rightSection={<Kbd size={"lg"}>⌘ + K</Kbd>}
         rightSectionWidth={100}
+        onOptionSubmit={(value) => {
+          const product = PRODUCTS.find((p) => p.id === value);
+          navigate(`/listing/${product?.categoryId}`, {
+            state: { highlightId: value },
+          });
+          searchRef.current?.blur();
+        }}
       />
       <Categories />
     </Stack>

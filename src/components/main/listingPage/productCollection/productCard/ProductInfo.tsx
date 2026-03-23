@@ -18,7 +18,7 @@ interface ProductInfoProps {
 
 const ProductInfo = ({ product }: ProductInfoProps) => {
   return (
-    <HoverCard width={750} transitionProps={{ duration: 0 }}>
+    <HoverCard position="left" width={750} transitionProps={{ duration: 0 }}>
       <HoverCard.Target>
         <ActionIcon h={"100%"} color="gray" variant="light" size={"input-xl"}>
           <Info size={22} />
