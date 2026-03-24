@@ -168,6 +168,8 @@ const FilterOverlay = ({
                     data={[
                       { value: "price_asc", label: "Cena vzestupně" },
                       { value: "price_desc", label: "Cena sestupně" },
+                      { value: "newest", label: "Nejnovější" },
+                      { value: "discounted", label: "Zlevněné" },
                     ]}
                     clearable
                   />

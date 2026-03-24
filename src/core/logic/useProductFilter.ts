@@ -4,7 +4,7 @@ import type { CategoryId } from "../data/categories";
 import { PRODUCTS } from "../data/products";
 import type { StatName, StatValue } from "../data/products";
 
-export type SortBy = "price_asc" | "price_desc" | null;
+export type SortBy = "price_asc" | "price_desc" | "newest" | "discounted" | null;
 
 export interface FilterControlProps {
   filters: FilterState;
@@ -57,6 +57,8 @@ export const useProductFilter = (category?: CategoryId) => {
 
     if (filters.sortBy === "price_asc") result = [...result].sort((a, b) => a.variants.S.price - b.variants.S.price);
     if (filters.sortBy === "price_desc") result = [...result].sort((a, b) => b.variants.S.price - a.variants.S.price);
+    if (filters.sortBy === "newest") result = [...result].sort((a, b) => b.launchDate.getTime() - a.launchDate.getTime());
+    if (filters.sortBy === "discounted") result = [...result].sort((a, b) => (b.discount || 0) - (a.discount || 0));
 
     return result;
   }, [category, filters.Hydratace, filters.Světlo, filters.Toxicita, filters.sortBy]);

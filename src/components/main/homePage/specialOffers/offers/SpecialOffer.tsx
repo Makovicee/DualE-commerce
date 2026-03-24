@@ -2,24 +2,24 @@ import { Carousel } from "@mantine/carousel";
 import { Badge, Group, Image, Paper, Stack, Text, Title } from "@mantine/core";
 import { Eye } from "lucide-react";
 import { useUIMode } from "../../../../../contexts/UIModeContext";
-
-const SLIDES = [
-  { src: null },
-  { src: null },
-  { src: null },
-  { src: null },
-  { src: null },
-  { src: null },
-  { src: null },
-  { src: null },
-];
+import {
+  formatTime,
+  useActionTimer,
+} from "../../../../../core/logic/useActionTimer";
+import { PRODUCTS } from "../../../../../core/data/products";
+import { useNavigate } from "react-router-dom";
 
 const SpecialOffer = () => {
   const { mode } = useUIMode();
+  const navigate = useNavigate();
+  const timer = useActionTimer(12 * 60 * 60);
 
-  const subtitle = (
+  const discountedProducts = PRODUCTS.filter((product) => product.discount);
+  const SLIDE_PRODUCTS = discountedProducts.slice(0, 5);
+
+  const actionTimer = (
     <Text c="dimmed" size="sm">
-      Končí za: 12h 43m 54s
+      Končí za: {formatTime(timer)}
     </Text>
   );
 
@@ -29,18 +29,19 @@ const SpecialOffer = () => {
         <Group
           style={{ cursor: "pointer" }}
           h="100%"
-          justify="space-around"
+          justify="space-evenly"
           wrap="nowrap"
+          onClick={() => navigate("/listing?sort=discounted")}
         >
           <Stack gap="xs">
             <Badge color="indigo">Akce</Badge>
-            <Title order={2}>50 % Sleva Tropické</Title>
-            {subtitle}
+            <Title order={2}>Zlevněné rostliny až 50%</Title>
+            {actionTimer}
           </Stack>
           <Group>
             <Image
-              src={null}
-              fallbackSrc="https://placehold.co/115x115"
+              src={discountedProducts[0].img}
+              fallbackSrc="https://placehold.co/130x130"
               h={115}
               w={115}
             />
@@ -49,39 +50,43 @@ const SpecialOffer = () => {
       ) : (
         <Stack>
           <Group gap="xs" align="center">
-            <Title order={2}>Pouštní kolekce</Title>
+            <Title order={2}>Akční kolekce</Title>
             <Text c="dimmed">- Sezonní výběr se zvýhodněním</Text>
           </Group>
-          <Carousel slideSize="25%" slideGap="md" withControls={true}>
-            {SLIDES.map((_, i) => (
-              <Carousel.Slide key={i}>
-                {i === SLIDES.length - 1 ? (
-                  <Paper
-                    h={200}
-                    bg="astGreen.6"
-                    style={{
-                      cursor: "pointer",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Stack gap={"xs"} align="center" c="white">
-                      <Eye size={28} />
-                      <Text fw={500}>Objevit další</Text>
-                    </Stack>
-                  </Paper>
-                ) : (
-                  <Image
-                    src={null}
-                    fallbackSrc="https://placehold.co/200x200"
-                    h={200}
-                  />
-                )}
+
+          <Carousel slideSize={210} slideGap="md" withControls={true}>
+            {SLIDE_PRODUCTS.map((product) => (
+              <Carousel.Slide key={product.id}>
+                <Image
+                  src={product.img}
+                  fallbackSrc="https://placehold.co/200x200"
+                  h={250}
+                  w={250}
+                  fit="cover"
+                />
               </Carousel.Slide>
             ))}
+            <Carousel.Slide>
+              <Paper
+                h={250}
+                w={250}
+                bg="astGreen.3"
+                style={{
+                  cursor: "pointer",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                onClick={() => navigate("/listing?sort=discounted")}
+              >
+                <Stack gap="xs" align="center" c={"white"}>
+                  <Eye size={28} />
+                  <Text fw={500}>Objevit další</Text>
+                </Stack>
+              </Paper>
+            </Carousel.Slide>
           </Carousel>
-          {subtitle}
+          {actionTimer}
         </Stack>
       )}
     </Paper>

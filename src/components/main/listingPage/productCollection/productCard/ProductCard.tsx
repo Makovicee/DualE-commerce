@@ -16,6 +16,7 @@ import { useHover } from "@mantine/hooks";
 import ProductInfo from "./ProductInfo";
 import type { Product } from "../../../../../core/data/products";
 import { useNavigate } from "react-router-dom";
+import { BadgePercent } from "lucide-react";
 
 interface ProductCardProps {
   product: Product;
@@ -68,9 +69,16 @@ const ProductCard = ({ product }: ProductCardProps) => {
             <Group wrap="nowrap" gap="xl">
               {image}
               <Stack gap={0}>
-                <Text size="xs" c="dimmed">
-                  {product.id}
-                </Text>
+                <Group>
+                  <Text size="xs" c="dimmed">
+                    {product.id}
+                  </Text>
+                  {product.discount && (
+                    <Badge color="indigo" variant="light">
+                      -{product.discount * 100} %
+                    </Badge>
+                  )}
+                </Group>
                 {title}
                 {ratingStars}
               </Stack>
@@ -114,7 +122,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
                           ({variant.sizeLabel})
                         </Text>
                       </Text>
-                      {variant.price.toFixed(2)} Kč
+                      {(variant.price * (1 - (product.discount ?? 0))).toFixed(
+                        2,
+                      )}{" "}
+                      Kč
                     </Group>
                   }
                 />
@@ -135,6 +146,24 @@ const ProductCard = ({ product }: ProductCardProps) => {
         >
           <div ref={ref} style={{ position: "relative" }}>
             {image}
+            {product?.discount && (
+              <Badge
+                p={"xs"}
+                h={75}
+                color="grape"
+                pos="absolute"
+                top={16}
+                right={16}
+              >
+                <Stack gap={"xs"}>
+                  <Text size="xs" fw={500}>
+                    {product.discount * 100}
+                  </Text>
+                  <BadgePercent size={20} />
+                </Stack>
+              </Badge>
+            )}
+
             <Transition mounted={hovered} transition="fade" duration={1000}>
               {(styles) => (
                 <Paper
@@ -160,9 +189,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
                         Od
                       </Text>
                       <Text fw={700}>
-                        {Math.min(
-                          ...Object.values(product.variants).map(
-                            (v) => v.price,
+                        {Math.ceil(
+                          Math.min(
+                            ...Object.values(product.variants).map(
+                              (v) => v.price * (1 - (product.discount ?? 0)),
+                            ),
                           ),
                         )}{" "}
                         Kč

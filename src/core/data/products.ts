@@ -72,7 +72,8 @@ export const PRODUCTS: Product[] = [
       { id: "c2", author: "Eva Malá", content: "Vypadal skvěle na mé poličce." },
       { id: "c3", author: "Petr Král", content: "Doporučuji pro začátečníky." },
     ],
-    launchDate: new Date("2024-06-10")
+    launchDate: new Date("2024-06-10"),
+    discount: 0.25
   },
   {
     id: "CX02",
@@ -130,7 +131,8 @@ export const PRODUCTS: Product[] = [
       { id: "c1", author: "Petra Horáková", content: "Vypadá skvěle a je nenáročný." },
       { id: "c2", author: "David Svoboda", content: "Snadno se pěstuje i při menší péči." },
     ],
-    launchDate: new Date("2024-06-25")
+    launchDate: new Date("2024-06-25"),
+
   },
   {
     id: "CX05",
@@ -191,7 +193,8 @@ export const PRODUCTS: Product[] = [
       { id: "c1", author: "Lukáš Novotný", content: "Skvělá kvalita a elegantní vzhled." },
       { id: "c2", author: "Marie Králová", content: "Vypadá skvěle a vydrží dlouho." },
     ],
-    launchDate: new Date("2024-06-20")
+    launchDate: new Date("2024-06-20"),
+    discount: 0.50
   },
   {
     id: "RZ03",
@@ -211,7 +214,8 @@ export const PRODUCTS: Product[] = [
       { id: "c2", author: "Petra Horáková", content: "Perfektní pro stolní aranžmá." },
       { id: "c3", author: "David Svoboda", content: "Vypadá hezky a snadno se udržuje." },
     ],
-    launchDate: new Date("2024-07-01")
+    launchDate: new Date("2024-07-01"),
+    discount: 0.1
   },
   {
     id: "RZ04",
@@ -250,7 +254,8 @@ export const PRODUCTS: Product[] = [
       { id: "c2", author: "Petr Král", content: "Skvělá do aranžmá i jako dekorace." },
       { id: "c3", author: "Marie Svobodová", content: "Elegantní tvar a snadná péče." },
     ],
-    launchDate: new Date("2024-07-05")
+    launchDate: new Date("2024-07-05"),
+    discount: 0.35
   },
 
   {
@@ -329,7 +334,8 @@ export const PRODUCTS: Product[] = [
       { id: "c2", author: "David Svoboda", content: "Snadno se udržuje a krásně vypadá." },
       { id: "c3", author: "Lucie Malá", content: "Dodává místnosti exotický nádech." },
     ],
-    launchDate: new Date("2024-06-25")
+    launchDate: new Date("2024-06-25"),
+
   },
 
 
@@ -409,7 +415,8 @@ export const PRODUCTS: Product[] = [
       { id: "c2", author: "David Svoboda", content: "Snadná péče a elegantní vzhled." },
       { id: "c3", author: "Lucie Malá", content: "Vypadá skvěle a přináší do prostoru život." },
     ],
-    launchDate: new Date("2024-12-01")
+    launchDate: new Date("2024-12-01"),
+    discount: 0.2
   },
   {
     id: "WN05",

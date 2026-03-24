@@ -6,8 +6,9 @@ import {
   Center,
   Stack,
   ActionIcon,
+  Badge,
 } from "@mantine/core";
-import { ShoppingBasket } from "lucide-react";
+import { BadgePercent, ShoppingBasket } from "lucide-react";
 import type { Product, VariantSize } from "../../../../../core/data/products";
 
 interface PreviewProps {
@@ -28,6 +29,23 @@ const Preview = ({ product, selectedVariant }: PreviewProps) => {
   return (
     <Card flex={1} withBorder>
       <Card.Section flex={1} withBorder p={"md"}>
+        {product.discount && (
+          <Badge
+            p={"xs"}
+            h={75}
+            color="grape"
+            pos="absolute"
+            top={16}
+            right={16}
+          >
+            <Stack gap={"xs"}>
+              <Text size="xs" fw={500}>
+                {product.discount * 100}
+              </Text>
+              <BadgePercent size={20} />
+            </Stack>
+          </Badge>
+        )}
         <Center h={"100%"}>
           <Image
             src={product.img}
@@ -45,8 +63,13 @@ const Preview = ({ product, selectedVariant }: PreviewProps) => {
         <Group justify="flex-end" gap="md">
           <Stack align="flex-end" gap={0}>
             <Text fw={700} size="xl">
-              {variant.price} Kč
+              {Math.ceil(variant.price * (1 - (product.discount ?? 0)))} Kč
             </Text>
+            {product.discount && (
+              <Text fw={500} size="sm" c="dimmed" td="line-through">
+                {variant.price} Kč
+              </Text>
+            )}
           </Stack>
           <ActionIcon color={"grape"} size={"input-xl"}>
             <ShoppingBasket size={36} />

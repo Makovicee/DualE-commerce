@@ -4,13 +4,17 @@ import { useUIMode } from "../../contexts/UIModeContext";
 import ASTNavbar from "./ASTNavbar";
 import EFFCardFooter from "./EFFCardFooter";
 import EFFNavbar from "./EFFNavbar";
+import { useEffect } from "react";
 
 const AppLayout = () => {
   const { mode } = useUIMode();
   const { pathname } = useLocation();
 
-  const showFooter = mode === "EFF" && pathname !== "/checkout";
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [pathname]);
 
+  const showFooter = mode === "EFF" && pathname !== "/checkout";
   return (
     <AppShell
       withBorder={false}

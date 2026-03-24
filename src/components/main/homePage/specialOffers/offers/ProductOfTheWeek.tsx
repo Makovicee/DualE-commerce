@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Group,
   Image,
@@ -6,54 +7,55 @@ import {
   Stack,
   Text,
   Title,
-  ActionIcon,
 } from "@mantine/core";
-import { Info } from "lucide-react";
 import { useUIMode } from "../../../../../contexts/UIModeContext";
+import { PRODUCTS } from "../../../../../core/data/products";
+import { useNavigate } from "react-router-dom";
+import ProductInfo from "../../../listingPage/productCollection/productCard/ProductInfo";
 
 const ProductOfTheWeek = () => {
   const { mode } = useUIMode();
+  const navigate = useNavigate();
+  const product = PRODUCTS.find((product) => product.id === "RZ01");
 
   const image = (
     <Image
-      src={null}
-      fallbackSrc="https://placehold.co/64x64"
-      h={mode === "EFF" ? 64 : 280}
-      w={mode === "EFF" ? 64 : 280}
+      src={product?.img}
+      fallbackSrc="https://placehold.co/100x100"
+      h={mode === "EFF" ? 100 : "100%"}
+      w={mode === "EFF" ? 100 : "100%"}
     />
   );
 
-  const title = <Title order={2}>Product name</Title>;
+  const title = <Title order={2}>{product?.name}</Title>;
   const label = (
     <Text fw={500} c={mode === "EFF" ? "dimmed" : "astGreen.5"}>
       Produkt týdne
     </Text>
   );
 
-  const button = (
-    <Button size="sm" h={"xl"} color="teal">
-      Přidat
-    </Button>
-  );
-
   return (
     <Paper>
       {mode === "EFF" ? (
-        <Group justify="space-between">
-          <Group>
-            {image}
-            <Stack gap="xs">
-              {title}
-              <Group>
-                {label}
-                {button}
-              </Group>
-            </Stack>
+        <Box
+          style={{ cursor: "pointer" }}
+          onClick={() =>
+            navigate(`/listing/${product?.categoryId}`, {
+              state: { highlightId: product?.id },
+            })
+          }
+        >
+          <Group justify="space-between">
+            <Group>
+              {image}
+              <Stack gap="xs">
+                {title}
+                <Group>{label}</Group>
+              </Stack>
+            </Group>
+            <ProductInfo product={product!} />
           </Group>
-          <ActionIcon variant="transparent" c="dimmed">
-            <Info color="gray" size={28} />
-          </ActionIcon>
-        </Group>
+        </Box>
       ) : (
         <Stack>
           <Group justify="space-between">
@@ -62,15 +64,13 @@ const ProductOfTheWeek = () => {
               {title}
             </Stack>
           </Group>
-          <Group justify="center" my="xl" wrap="nowrap">
+          <Group my="xl" wrap="nowrap" w={"50vw"}>
             {image}
-            <Stack w={"35%"}>
-              <Text>
-                Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem
-                ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum
-                dolor sit amet
-              </Text>
-              {button}
+            <Stack>
+              <Text lineClamp={10}>{product?.description}</Text>
+              <Button onClick={() => navigate(`/detail/${product?.id}`)}>
+                Nahlédnout
+              </Button>
             </Stack>
           </Group>
         </Stack>

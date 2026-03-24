@@ -1,8 +1,16 @@
-import { Center, Stack, Image, ActionIcon, Text } from "@mantine/core";
+import {
+  Center,
+  Stack,
+  Image,
+  ActionIcon,
+  Text,
+  Box,
+  Title,
+} from "@mantine/core";
 import { useUIMode } from "../../../contexts/UIModeContext";
 import SearchTools from "./searchTools/SearchTools";
 
-import { Flower } from "lucide-react";
+import { ArrowDown, Flower } from "lucide-react";
 import SpecialOffers from "./specialOffers/SpecialOffers";
 import { useNavigate } from "react-router-dom";
 
@@ -12,13 +20,37 @@ const HomePage = () => {
   return (
     <>
       {mode === "AST" && (
-        <Image
-          src={null}
-          fallbackSrc="https://placehold.co/1920x800"
-          mah={700}
-          fit="cover"
-          mb={"xl"}
-        />
+        <Box
+          mb="xl"
+          style={{
+            position: "relative",
+            overflow: "hidden",
+            borderRadius: "var(--mantine-radius-lg)",
+            margin: "0 var(--mantine-spacing-xl)",
+          }}
+        >
+          <Image src="/misc/Hero.jpg" fit="cover" w="100%" mah={600} />
+          <Stack
+            bg="rgba(0, 0, 0, 0.2)"
+            p="xl"
+            w="100%"
+            h="100%"
+            ta="center"
+            style={{ position: "absolute", inset: 0 }}
+            justify="center"
+          >
+            <Title fs="italic" c="white">
+              Objevte krásu přírody
+            </Title>
+            <Text fw={500} c="white">
+              V našem obchodě najdete širokou škálu květin a rostlin, které vám
+              pomohou oživit váš domov.
+            </Text>
+            <Center>
+              <ArrowDown color="white" strokeWidth={2.5} />
+            </Center>
+          </Stack>
+        </Box>
       )}
       <Center flex={1}>
         <Stack w="50%" gap="xl">
