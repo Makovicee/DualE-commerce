@@ -13,10 +13,12 @@ import { useNavigate } from "react-router-dom";
 import { PRODUCTS } from "../../core/data/products";
 import { useAutocompleteRender } from "../main/homePage/searchTools/autocompleteRender/AutocompleteRender";
 import { useRef } from "react";
+import { useCart } from "../../core/CartContext";
 
 const ASTNavbar = () => {
   const { toggle } = useUIMode();
   const navigate = useNavigate();
+  const { totalItems } = useCart();
   const renderOption = useAutocompleteRender();
   const searchRef = useRef<HTMLInputElement>(null);
   return (
@@ -60,8 +62,13 @@ const ASTNavbar = () => {
             searchRef.current?.blur();
           }}
         />
-        <Indicator fw={"bold"} label="2" size={20}>
-          <ActionIcon color="dark" variant="transparent" size={"input-md"}>
+        <Indicator fw={"bold"} label={totalItems} size={22}>
+          <ActionIcon
+            onClick={() => navigate("/checkout")}
+            color="dark"
+            variant="transparent"
+            size={"input-md"}
+          >
             <ShoppingCart size={22} />
           </ActionIcon>
         </Indicator>

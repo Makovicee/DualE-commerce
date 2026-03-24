@@ -1,5 +1,6 @@
 import {
   ActionIcon,
+  Center,
   Group,
   Image,
   NumberInput,
@@ -8,36 +9,48 @@ import {
   Text,
 } from "@mantine/core";
 import { X } from "lucide-react";
+import { useCart, type CartItem } from "../../../../../core/CartContext";
 
-const ItemCard = () => {
+const ItemCard = ({ item }: { item: CartItem }) => {
+  const { removeItem, updateItemCount } = useCart();
   return (
     <Paper p={"xs"}>
       <Stack>
         <Group justify="space-between">
           <Group gap="xs">
             <Text size="xl" fw={600}>
-              Název Položky
+              {item.product.name}
             </Text>
-            <Text c="dimmed">- Extra</Text>
+            <Text c="dimmed">- {item.variant}</Text>
           </Group>
           <Group gap={"xs"}>
             <NumberInput
-              defaultValue={1}
+              defaultValue={item.quantity}
               min={1}
               styles={{ input: { textAlign: "center" } }}
               w={100}
+              onChange={(v) =>
+                updateItemCount(item.product, item.variant, Number(v))
+              }
             />
-            <ActionIcon variant="transparent" color="red">
+            <ActionIcon
+              variant="transparent"
+              color="red"
+              onClick={() => removeItem(item.product.id, item.variant)}
+            >
               <X size={20} />
             </ActionIcon>
           </Group>
         </Group>
-
-        <Image
-          src={null}
-          fallbackSrc="https://placehold.co/400x300"
-          radius="md"
-        />
+        <Center>
+          <Image
+            src={item.product.img}
+            fallbackSrc="https://placehold.co/400x300"
+            radius="md"
+            h={400}
+            w={400}
+          />
+        </Center>
       </Stack>
     </Paper>
   );

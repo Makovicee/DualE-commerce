@@ -1,8 +1,11 @@
-import { Group, Stack, Title, Text } from "@mantine/core";
+import { Group, Title } from "@mantine/core";
 import { useUIMode } from "../../../../contexts/UIModeContext";
 import FilterOverlay from "./filterOverlay/FilterOverlay";
 import FilterBox from "./filterBox/FilterBox";
 import type { FilterControlProps } from "../../../../core/logic/useProductFilter";
+import { CATEGORIES } from "../../../../core/data/categories";
+import { useParams } from "react-router-dom";
+import { Component } from "lucide-react";
 
 const Filter = ({
   filters,
@@ -10,6 +13,14 @@ const Filter = ({
   setOnSortBy,
 }: FilterControlProps) => {
   const { mode } = useUIMode();
+  const { category } = useParams<{ category: string }>();
+
+  const currentCategory = CATEGORIES.find((c) => c.id === category);
+  const CategoryIcon = currentCategory ? currentCategory.icon : Component;
+  const categoryLabel = currentCategory
+    ? currentCategory.labels[mode]
+    : "Všechny produkty";
+
   return (
     <>
       {mode === "EFF" ? (
@@ -20,17 +31,12 @@ const Filter = ({
         />
       ) : (
         <Group justify="space-between">
-          <Stack gap={"xs"} w={"35%"}>
+          <Group align="center" gap={"xs"} py={"xl"} w={"50%"}>
+            <CategoryIcon color="var(--mantine-color-grape-6)" size={42} />
             <Title order={1} fs="italic" fw={500}>
-              Kolekce
+              {categoryLabel}
             </Title>
-            <Text c={"dimmed"}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor
-              nemo incidunt recusandae voluptatem sit consectetur optio itaque
-              ipsam suscipit error, commodi placeat harum autem enim fuga
-              quibusdam tenetur. Facilis, ab!
-            </Text>
-          </Stack>
+          </Group>
           <FilterOverlay
             filters={filters}
             setStatFilter={setStatFilter}

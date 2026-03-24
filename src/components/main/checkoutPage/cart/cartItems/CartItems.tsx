@@ -13,15 +13,8 @@ import ItemCard from "./ItemCard";
 import { Carousel } from "@mantine/carousel";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { EmblaCarouselType } from "embla-carousel";
-import { useRef, type Dispatch, type SetStateAction } from "react";
+import { useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { useCart } from "../../../../../core/CartContext";
-
-const ITEMS = [
-  { id: 1, name: "Název položky", size: "XS", quantity: 3, price: 509 },
-  { id: 2, name: "Název položky", size: "XL", quantity: 1, price: 129 },
-  { id: 3, name: "Název položky", size: "XL", quantity: 4, price: 147 },
-  { id: 4, name: "Název položky", size: "XS", quantity: 8, price: 841 },
-];
 
 interface CartItemsProps {
   checked: string[];
@@ -34,6 +27,9 @@ const CartItems = ({ checked, setChecked }: CartItemsProps) => {
     useCart();
 
   const emblaApi = useRef<EmblaCarouselType | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const prevItem = items[(currentIndex - 1 + items.length) % items.length];
+  const nextItem = items[(currentIndex + 1) % items.length];
 
   const toggleCheck = (key: string) =>
     setChecked((prev) =>
@@ -119,12 +115,13 @@ const CartItems = ({ checked, setChecked }: CartItemsProps) => {
             withIndicators
             getEmblaApi={(api) => {
               emblaApi.current = api;
+              api.on("select", () => setCurrentIndex(api.selectedScrollSnap()));
             }}
             emblaOptions={{ loop: true }}
           >
-            {ITEMS.map((item) => (
-              <Carousel.Slide key={item.id}>
-                <ItemCard />
+            {items.map((item) => (
+              <Carousel.Slide key={`${item.product.id}-${item.variant}`}>
+                <ItemCard item={item} />
               </Carousel.Slide>
             ))}
           </Carousel>
@@ -135,14 +132,14 @@ const CartItems = ({ checked, setChecked }: CartItemsProps) => {
                 <Group c={"astGreen"} gap={0}>
                   <ChevronLeft strokeWidth={3} size={22} />
                   <Text fw={500} c="dimmed" size="xs">
-                    Název Položky
+                    {prevItem.product.name} - {prevItem.variant}
                   </Text>
                 </Group>
                 <Image
-                  src={null}
+                  src={prevItem.product.img}
                   fallbackSrc="https://placehold.co/60x60"
-                  h={48}
-                  w={48}
+                  h={100}
+                  w={100}
                   radius="sm"
                 />
               </Stack>
@@ -152,15 +149,16 @@ const CartItems = ({ checked, setChecked }: CartItemsProps) => {
               <Stack gap="xs" align="flex-end">
                 <Group c={"astGreen"} gap={0}>
                   <Text fw={500} c="dimmed" size="xs">
-                    Název Položky
+                    {nextItem.product.name} - {nextItem.variant}
                   </Text>
+
                   <ChevronRight strokeWidth={3} size={22} />
                 </Group>
                 <Image
-                  src={null}
+                  src={nextItem.product.img}
                   fallbackSrc="https://placehold.co/60x60"
-                  h={48}
-                  w={48}
+                  h={100}
+                  w={100}
                   radius="sm"
                 />
               </Stack>
