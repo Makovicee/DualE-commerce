@@ -6,21 +6,24 @@ import { UIModeProvider } from "./contexts/UIModeProvider";
 import ListingPage from "./components/main/listingPage/ListingPage";
 import DetailPage from "./components/main/detailPage/DetailPage";
 import CheckoutPage from "./components/main/checkoutPage/CheckoutPage";
+import { CartProvider } from "./core/CartProvider";
 
 const App = () => {
   return (
     <UIModeProvider>
       <ThemedMantineProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route element={<AppLayout />}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/listing/:category?" element={<ListingPage />} />
-              <Route path="/detail/:id" element={<DetailPage />} />
-              <Route path="/checkout" element={<CheckoutPage />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
+        <CartProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route element={<AppLayout />}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/listing/:category?" element={<ListingPage />} />
+                <Route path="/detail/:id" element={<DetailPage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </CartProvider>
       </ThemedMantineProvider>
     </UIModeProvider>
   );

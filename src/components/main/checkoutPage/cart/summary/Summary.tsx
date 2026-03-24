@@ -1,31 +1,54 @@
 import { Divider, Group, Stack, Text } from "@mantine/core";
+import { useCart } from "../../../../../core/CartContext";
+import { useUIMode } from "../../../../../contexts/UIModeContext";
 
-const ROWS = [
-  { label: "Mezisoučet", value: "1293 Kč" },
-  { label: "Daň", value: "+119 Kč" },
-  { label: "Doprava", value: "Zdarma", color: "teal" },
-];
+const Summary = ({
+  TAX,
+  checkedTotalPrice,
+}: {
+  TAX: number;
+  checkedTotalPrice: number;
+}) => {
+  const { totalPrice } = useCart();
 
-const Summary = () => {
+  const { mode } = useUIMode();
+
   return (
     <Stack>
-      {ROWS.map(({ label, value, color }) => (
-        <Group key={label} justify="space-between">
-          <Text size="xs" fw={500} c="dimmed">
-            {label}
-          </Text>
-          <Text size="xs" fw={500} c={color}>
-            {value}
-          </Text>
-        </Group>
-      ))}
+      <Group justify="space-between">
+        <Text size="xs" fw={500} c="dimmed">
+          Mezisoučet
+        </Text>
+        <Text size="xs" fw={500}>
+          {mode === "EFF" ? checkedTotalPrice : totalPrice} Kč
+        </Text>
+      </Group>
+
+      <Group justify="space-between">
+        <Text size="xs" fw={500} c="dimmed">
+          Daň
+        </Text>
+        <Text size="xs" fw={500}>
+          +{TAX} Kč
+        </Text>
+      </Group>
+
+      <Group justify="space-between">
+        <Text size="xs" fw={500} c="dimmed">
+          Doprava
+        </Text>
+        <Text size="xs" fw={500} c={"teal"}>
+          Zdarma
+        </Text>
+      </Group>
+
       <Divider />
       <Group justify="space-between">
         <Text size="xs" fw={500} c="dimmed">
           Celkem
         </Text>
         <Text size="xs" fw={500}>
-          1500 Kč
+          {mode === "EFF" ? checkedTotalPrice + TAX : totalPrice + TAX}
         </Text>
       </Group>
     </Stack>

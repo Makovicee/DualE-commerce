@@ -17,6 +17,7 @@ import ProductInfo from "./ProductInfo";
 import type { Product } from "../../../../../core/data/products";
 import { useNavigate } from "react-router-dom";
 import { BadgePercent } from "lucide-react";
+import { useCart } from "../../../../../core/CartContext";
 
 interface ProductCardProps {
   product: Product;
@@ -26,6 +27,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const { mode } = useUIMode();
   const { hovered, ref } = useHover();
   const navigate = useNavigate();
+  const { updateItemCount, items } = useCart();
 
   const image = (
     <Image
@@ -107,8 +109,17 @@ const ProductCard = ({ product }: ProductCardProps) => {
                   disabled={variant.stock === 0}
                   allowDecimal={false}
                   allowNegative={false}
-                  defaultValue={0}
+                  defaultValue={
+                    items.find(
+                      (item) =>
+                        item.product.id === product.id &&
+                        item.variant === variant.size,
+                    )?.quantity ?? 0
+                  }
                   min={0}
+                  onChange={(value) =>
+                    updateItemCount(product, variant.size, Number(value))
+                  }
                   labelProps={{ style: { width: "100%" } }}
                   label={
                     <Group

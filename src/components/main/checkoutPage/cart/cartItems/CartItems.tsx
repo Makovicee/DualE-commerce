@@ -13,7 +13,8 @@ import ItemCard from "./ItemCard";
 import { Carousel } from "@mantine/carousel";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { EmblaCarouselType } from "embla-carousel";
-import { useRef } from "react";
+import { useRef, type Dispatch, type SetStateAction } from "react";
+import { useCart } from "../../../../../core/CartContext";
 
 const ITEMS = [
   { id: 1, name: "Název položky", size: "XS", quantity: 3, price: 509 },
@@ -22,46 +23,94 @@ const ITEMS = [
   { id: 4, name: "Název položky", size: "XS", quantity: 8, price: 841 },
 ];
 
-const CartItems = () => {
+interface CartItemsProps {
+  checked: string[];
+  setChecked: Dispatch<SetStateAction<string[]>>;
+}
+
+const CartItems = ({ checked, setChecked }: CartItemsProps) => {
   const { mode } = useUIMode();
+  const { items, removeItem, updateItemCount, clearCart, totalPrice } =
+    useCart();
+
   const emblaApi = useRef<EmblaCarouselType | null>(null);
 
+  const toggleCheck = (key: string) =>
+    setChecked((prev) =>
+      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key],
+    );
   return (
     <>
       {mode === "EFF" ? (
-        <Stack gap={"xl"} px={"md"}>
-          <Group ml={"xs"}>
-            <Checkbox indeterminate />
-            <Text size="xs" c="red" fw={500} style={{ cursor: "pointer" }}>
+        <Stack gap="xl" px="md">
+          <Group ml="xs">
+            <Checkbox
+              indeterminate={
+                checked.length > 0 && checked.length < items.length
+              }
+              checked={checked.length === items.length}
+              onChange={() =>
+                setChecked(
+                  checked.length === items.length
+                    ? []
+                    : items.map((i) => `${i.product.id}-${i.variant}`),
+                )
+              }
+            />
+            <Text
+              size="xs"
+              c="red"
+              fw={500}
+              style={{ cursor: "pointer" }}
+              onClick={clearCart}
+            >
               Smazat vše
             </Text>
           </Group>
-          <Table>
-            <Table.Tbody>
-              {ITEMS.map((item) => (
-                <ItemRow
-                  key={item.id}
-                  {...item}
-                  checked={true}
-                  onCheck={() => {}}
-                  onRemove={() => {}}
-                />
-              ))}
-            </Table.Tbody>
-            <Table.Tfoot>
-              <Table.Tr>
-                <Table.Td colSpan={4}>
-                  <Text size="xs">Celkem</Text>
-                </Table.Td>
-                <Table.Td>
-                  <Text size="xs" fw={700}>
-                    {2000.11}
-                  </Text>
-                </Table.Td>
-                <Table.Td />
-              </Table.Tr>
-            </Table.Tfoot>
-          </Table>
+          {items.length > 0 ? (
+            <Table>
+              <Table.Tbody>
+                {items.map((item) => {
+                  const key = `${item.product.id}-${item.variant}`;
+                  return (
+                    <ItemRow
+                      key={key}
+                      name={item.product.name}
+                      size={item.variant}
+                      quantity={item.quantity}
+                      price={
+                        item.product.variants[item.variant].price *
+                        item.quantity
+                      }
+                      checked={checked.includes(key)}
+                      onCheck={() => toggleCheck(key)}
+                      onRemove={() => removeItem(item.product.id, item.variant)}
+                      onQuantityChange={(qty) =>
+                        updateItemCount(item.product, item.variant, qty)
+                      }
+                    />
+                  );
+                })}
+              </Table.Tbody>
+              <Table.Tfoot>
+                <Table.Tr>
+                  <Table.Td colSpan={4}>
+                    <Text size="xs">Celkem</Text>
+                  </Table.Td>
+                  <Table.Td>
+                    <Text size="xs" fw={700}>
+                      {totalPrice.toFixed(2)}
+                    </Text>
+                  </Table.Td>
+                  <Table.Td />
+                </Table.Tr>
+              </Table.Tfoot>
+            </Table>
+          ) : (
+            <Text ta={"center"} size="sm" c="dimmed">
+              Žádné položky v košíku
+            </Text>
+          )}
         </Stack>
       ) : (
         <Stack gap={0}>

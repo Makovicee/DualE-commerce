@@ -9,6 +9,7 @@ interface ItemRowProps {
   checked: boolean;
   onCheck: () => void;
   onRemove: () => void;
+  onQuantityChange: (qty: number) => void;
 }
 
 const ItemRow = ({
@@ -19,6 +20,7 @@ const ItemRow = ({
   checked,
   onCheck,
   onRemove,
+  onQuantityChange,
 }: ItemRowProps) => {
   return (
     <Table.Tr>
@@ -39,7 +41,8 @@ const ItemRow = ({
           hideControls
           w={42}
           value={quantity}
-        ></NumberInput>
+          onChange={(v) => onQuantityChange(Number(v))}
+        />
       </Table.Td>
       <Table.Td>
         <Text size="xs" fw={700}>
