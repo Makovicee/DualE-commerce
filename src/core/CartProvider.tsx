@@ -1,4 +1,3 @@
-// src/contexts/CartProvider.tsx
 import type { ReactNode } from "react";
 import { useListState } from "@mantine/hooks";
 import { CartContext } from "./CartContext";
@@ -32,6 +31,15 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     if (index >= 0) handlers.remove(index);
   };
 
+  const removeMultipleItems = (itemsToRemove: CartItem[]) => {
+    const keysToRemove = itemsToRemove.map((i) =>
+      getKey(i.product.id, i.variant),
+    );
+    handlers.filter(
+      (i) => !keysToRemove.includes(getKey(i.product.id, i.variant)),
+    );
+  };
+
   const updateItemCount = (
     product: Product,
     variant: VariantSize,
@@ -62,6 +70,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         addItem,
         removeItem,
         updateItemCount,
+        removeMultipleItems,
         clearCart,
         undo: () => {},
         redo: () => {},

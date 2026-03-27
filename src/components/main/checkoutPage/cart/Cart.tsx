@@ -2,15 +2,16 @@ import { Button, Grid, Paper, Stack, Text } from "@mantine/core";
 import CartItems from "./cartItems/CartItems";
 import Summary from "./summary/Summary";
 import { useUIMode } from "../../../../contexts/UIModeContext";
-import { ArchiveX, ArrowRight } from "lucide-react";
+import { ArchiveX, ArrowRight, Check } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "../../../../core/CartContext";
+import { notifications } from "@mantine/notifications";
 
 const TAX = 119;
 
 const Cart = () => {
   const { mode } = useUIMode();
-  const { items } = useCart();
+  const { items, removeMultipleItems } = useCart();
   const [checked, setChecked] = useState<string[]>(
     items.map((i) => `${i.product.id}-${i.variant}`),
   );
@@ -22,6 +23,19 @@ const Cart = () => {
     const variantPrice = item.product.variants[item.variant].price;
     return acc + variantPrice * item.quantity;
   }, 0);
+
+  const handlePayment = () => {
+    removeMultipleItems(checkedItems);
+    notifications.show({
+      position: "bottom-center",
+      withCloseButton: true,
+      autoClose: 3000,
+      title: "Úspěšně zaplaceno",
+      message: "Vaše objednávka byla úspěšně přijata.",
+      color: "teal",
+      icon: <Check />,
+    });
+  };
 
   const cartItems = <CartItems checked={checked} setChecked={setChecked} />;
   const summary = items.length > 0 && (
@@ -52,6 +66,7 @@ const Cart = () => {
           justify="space-between"
           rightSection={<ArrowRight size={36} />}
           disabled={checked.length === 0}
+          onClick={handlePayment}
         >
           <Stack gap={0} align="flex-start">
             <Text size="xs" tt="uppercase" fw={600} c="dimmed">

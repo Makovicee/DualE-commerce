@@ -12,6 +12,7 @@ export interface CartContextValue {
 addItem: (product: Product, variant: VariantSize, quantity?: number) => void;
   removeItem: (productId: string, variant: VariantSize) => void;
   updateItemCount: (product: Product, variant: VariantSize, quantity: number) => void;
+  removeMultipleItems: (itemsToRemove: CartItem[]) => void;
   clearCart: () => void;
   undo: () => void;
   redo: () => void;

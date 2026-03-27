@@ -21,6 +21,8 @@ import {
   ShoppingCart,
 } from "lucide-react";
 import { useState } from "react";
+import { useCart } from "../../../core/CartContext";
+import CompleteModal from "./CompleteModal";
 
 const STEPS = [
   {
@@ -52,6 +54,13 @@ const CheckoutPage = () => {
   const { mode } = useUIMode();
   const [active, setActive] = useState(0);
   const [key, setKey] = useState(0);
+  const { items, clearCart } = useCart();
+  const [completed, setCompleted] = useState(false);
+
+  const handleComplete = () => {
+    clearCart();
+    setCompleted(true);
+  };
 
   const handleStepClick = (step: number) => {
     setActive(step);
@@ -74,14 +83,7 @@ const CheckoutPage = () => {
     </SimpleGrid>
   ) : (
     <Stack>
-      <Stepper
-        m="xl"
-        color="green"
-        active={active}
-        w="75%"
-        mx="auto"
-        onStepClick={handleStepClick}
-      >
+      <Stepper m="xl" color="green" active={active} w="75%" mx="auto">
         {STEPS.map((step) => (
           <Stepper.Step
             key={step.label}
@@ -118,8 +120,12 @@ const CheckoutPage = () => {
         </ActionIcon>
         <Button
           color="grape"
-          onClick={() => handleStepClick(active + 1)}
-          disabled={active === STEPS.length}
+          onClick={() =>
+            active === STEPS.length - 1
+              ? handleComplete()
+              : handleStepClick(active + 1)
+          }
+          disabled={active === STEPS.length || items.length === 0}
           size="lg"
           rightSection={
             active === STEPS.length - 1 ? (
@@ -132,6 +138,7 @@ const CheckoutPage = () => {
           {active === STEPS.length - 1 ? "Dokončit" : "Pokračovat"}
         </Button>
       </Group>
+      <CompleteModal completed={completed} setCompleted={setCompleted} />
     </Stack>
   );
 };
