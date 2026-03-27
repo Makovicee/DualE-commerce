@@ -22,7 +22,11 @@ import type {
   FilterControlProps,
   SortBy,
 } from "../../../../../core/logic/useProductFilter";
-import { STAT_NAMES, type StatValue } from "../../../../../core/data/products";
+import {
+  PRODUCTS,
+  STAT_NAMES,
+  type StatValue,
+} from "../../../../../core/data/products";
 
 interface FilterOverlayProps extends FilterControlProps {
   size?: "input-sm" | "input-xl";
@@ -41,6 +45,10 @@ const FilterOverlay = ({
   const navigate = useNavigate();
   const active =
     CATEGORIES.find((category) => category.path === pathname)?.id ?? "home";
+
+  const categoryProductImage = PRODUCTS.find(
+    (product) => product.categoryId === active,
+  )?.img;
 
   return (
     <>
@@ -114,11 +122,14 @@ const FilterOverlay = ({
               }}
             >
               <AspectRatio ratio={1} w={350}>
-                <Image
-                  src={null}
-                  fallbackSrc="https://placehold.co/200x200"
-                  radius="md"
-                />
+                {categoryProductImage && (
+                  <Image
+                    src={categoryProductImage}
+                    fallbackSrc="https://placehold.co/200x200"
+                    radius="md"
+                    mah={350}
+                  />
+                )}
               </AspectRatio>
             </Grid.Col>
           </Grid>
