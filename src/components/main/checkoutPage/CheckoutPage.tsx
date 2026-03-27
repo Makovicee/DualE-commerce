@@ -64,7 +64,7 @@ const CheckoutPage = () => {
       cols={3}
     >
       {EFF_ORDER.map((item, i) => (
-        <Box key={i} px="xl">
+        <Box key={i} px="xl" pt={"md"}>
           <Text ta="center" size="md" fw={500} c="dimmed">
             {item.label}
           </Text>

@@ -132,11 +132,11 @@ const CartItems = ({ checked, setChecked }: CartItemsProps) => {
                 <Group c={"astGreen"} gap={0}>
                   <ChevronLeft strokeWidth={3} size={22} />
                   <Text fw={500} c="dimmed" size="xs">
-                    {prevItem.product.name} - {prevItem.variant}
+                    {prevItem?.product?.name} - {prevItem?.variant}
                   </Text>
                 </Group>
                 <Image
-                  src={prevItem.product.img}
+                  src={prevItem?.product?.img}
                   fallbackSrc="https://placehold.co/60x60"
                   h={100}
                   w={100}
@@ -149,13 +149,13 @@ const CartItems = ({ checked, setChecked }: CartItemsProps) => {
               <Stack gap="xs" align="flex-end">
                 <Group c={"astGreen"} gap={0}>
                   <Text fw={500} c="dimmed" size="xs">
-                    {nextItem.product.name} - {nextItem.variant}
+                    {nextItem?.product?.name} - {nextItem?.variant}
                   </Text>
 
                   <ChevronRight strokeWidth={3} size={22} />
                 </Group>
                 <Image
-                  src={nextItem.product.img}
+                  src={nextItem?.product?.img}
                   fallbackSrc="https://placehold.co/60x60"
                   h={100}
                   w={100}
