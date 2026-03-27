@@ -13,8 +13,9 @@ import {
 } from "@mantine/core";
 import { useUIMode } from "../../../../../contexts/UIModeContext";
 import { Gift } from "lucide-react";
+import type { CheckoutFormProps } from "../../../../../core/logic/useCheckoutForm";
 
-const GiftOption = () => {
+const GiftOption = ({ form }: CheckoutFormProps) => {
   const { mode } = useUIMode();
 
   const recipientSelect = (
@@ -24,9 +25,17 @@ const GiftOption = () => {
         { group: "Práce", items: ["Klienta", "Oddělení"] },
         { group: "Rodina", items: ["Sestru", "Mámu", "Bratra"] },
       ]}
+      {...form.getInputProps("giftRecipient")}
     />
   );
-  const messageInput = <Textarea label="Zpráva" autosize minRows={3} />;
+  const messageInput = (
+    <Textarea
+      label="Zpráva"
+      autosize
+      minRows={3}
+      {...form.getInputProps("giftMessage")}
+    />
+  );
   const colorPicker = (
     <ColorPicker
       format="hex"
@@ -34,6 +43,7 @@ const GiftOption = () => {
       withPicker={false}
       swatchesPerRow={2}
       style={{ "--cp-swatch-size": mode === "AST" ? "64px" : "32px" }}
+      {...form.getInputProps("giftColor")}
     />
   );
 

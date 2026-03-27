@@ -6,10 +6,11 @@ import { ArchiveX, ArrowRight, Check } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "../../../../core/CartContext";
 import { notifications } from "@mantine/notifications";
+import type { CheckoutFormProps } from "../../../../core/logic/useCheckoutForm";
 
 const TAX = 119;
 
-const Cart = () => {
+const Cart = ({ form }: CheckoutFormProps) => {
   const { mode } = useUIMode();
   const { items, removeMultipleItems } = useCart();
   const [checked, setChecked] = useState<string[]>(
@@ -25,6 +26,9 @@ const Cart = () => {
   }, 0);
 
   const handlePayment = () => {
+    const result = form.validate();
+    if (result.hasErrors) return;
+
     removeMultipleItems(checkedItems);
     notifications.show({
       position: "bottom-center",

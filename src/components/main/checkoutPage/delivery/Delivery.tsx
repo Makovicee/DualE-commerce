@@ -3,13 +3,14 @@ import CustomerInfo from "./customerInfo/CustomerInfo";
 import GiftOption from "./giftOption/GiftOption";
 import Details from "./details/Details";
 import { useUIMode } from "../../../../contexts/UIModeContext";
+import type { CheckoutFormProps } from "../../../../core/logic/useCheckoutForm";
 
-const Delivery = () => {
+const Delivery = ({ form }: CheckoutFormProps) => {
   const { mode } = useUIMode();
 
   return (
     <Stack gap="xl" px="md">
-      <Details />
+      <Details form={form} />
       {mode === "AST" && (
         <Divider
           orientation="vertical"
@@ -19,7 +20,7 @@ const Delivery = () => {
           mx={"auto"}
         />
       )}
-      <CustomerInfo />
+      <CustomerInfo form={form} />
       {mode === "AST" && (
         <Divider
           orientation="vertical"
@@ -29,7 +30,7 @@ const Delivery = () => {
           h={300}
         />
       )}
-      <GiftOption />
+      <GiftOption form={form} />
     </Stack>
   );
 };

@@ -1,12 +1,21 @@
-import { useState } from "react";
 import { useUIMode } from "../../../../../contexts/UIModeContext";
-import { Group, Stack, TextInput, Text, Title, Grid } from "@mantine/core";
+import {
+  Group,
+  Stack,
+  TextInput,
+  Text,
+  Title,
+  Grid,
+  Select,
+  Input,
+} from "@mantine/core";
 import { Calendar, MapPin } from "lucide-react";
 import { DateInput, DatePicker } from "@mantine/dates";
+import type { CheckoutFormProps } from "../../../../../core/logic/useCheckoutForm";
+import { ADDRESSES } from "../../../../../core/data/adresses";
 
-const Details = () => {
+const Details = ({ form }: CheckoutFormProps) => {
   const { mode } = useUIMode();
-  const [date, setDate] = useState<string | null>(null);
 
   return mode === "EFF" ? (
     <Stack>
@@ -15,14 +24,40 @@ const Details = () => {
         label="Datum"
         leftSection={<Calendar size={16} />}
         withAsterisk
-        value={date}
-        onChange={setDate}
+        {...form.getInputProps("date")}
       />
-
-      <TextInput
+      <Select
         label="Adresa doručení"
+        placeholder="Začněte psát ulici..."
         leftSection={<MapPin size={16} />}
+        searchable
+        nothingFoundMessage="Adresa nenalezena"
         withAsterisk
+        data={ADDRESSES}
+        onChange={(value) => {
+          const address = ADDRESSES.find((a) => a.value === value);
+          if (address) {
+            form.setFieldValue("address", address.label);
+            form.setFieldValue("city", address.city);
+            form.setFieldValue("zip", address.zip);
+          }
+        }}
+        renderOption={({ option }) => {
+          const address = ADDRESSES.find((a) => a.value === option.value);
+          return (
+            <Group gap="sm" wrap="nowrap">
+              <MapPin size={16} color="gray" />
+              <Stack gap={0}>
+                <Text size="sm" fw={500}>
+                  {option.label}
+                </Text>
+                <Text size="xs" c="dimmed">
+                  {address?.city}, {address?.zip}
+                </Text>
+              </Stack>
+            </Group>
+          );
+        }}
       />
     </Stack>
   ) : (
@@ -51,13 +86,19 @@ const Details = () => {
         </Grid.Col>
 
         <Grid.Col span="content">
-          <DatePicker size="md" value={date} onChange={setDate} />
+          <Input.Wrapper error={form.errors.date}>
+            <DatePicker size="md" {...form.getInputProps("date")} />
+          </Input.Wrapper>
         </Grid.Col>
       </Grid>
       <Group justify="center" mt={"md"} mb={"xl"}>
-        <TextInput label="Ulice" withAsterisk />
-        <TextInput label="Město" withAsterisk />
-        <TextInput label="PSČ" withAsterisk />
+        <TextInput
+          label="Ulice"
+          withAsterisk
+          {...form.getInputProps("address")}
+        />
+        <TextInput label="Město" withAsterisk {...form.getInputProps("city")} />
+        <TextInput label="PSČ" withAsterisk {...form.getInputProps("zip")} />
       </Group>
     </Stack>
   );

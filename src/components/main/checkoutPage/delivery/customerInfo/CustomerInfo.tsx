@@ -10,14 +10,35 @@ import {
 } from "@mantine/core";
 import { User } from "lucide-react";
 import { useUIMode } from "../../../../../contexts/UIModeContext";
+import type { CheckoutFormProps } from "../../../../../core/logic/useCheckoutForm";
 
-const CustomerInfo = () => {
+const CustomerInfo = ({ form }: CheckoutFormProps) => {
   const { mode } = useUIMode();
 
-  const firstNameInput = <TextInput label="Jméno" withAsterisk />;
-  const lastNameInput = <TextInput label="Příjmení" withAsterisk />;
-  const emailInput = <TextInput label="E-mail" withAsterisk />;
-  const phoneInput = <TextInput label="Telefonní číslo" withAsterisk />;
+  const firstNameInput = (
+    <TextInput
+      label="Jméno"
+      withAsterisk
+      {...form.getInputProps("firstName")}
+    />
+  );
+  const lastNameInput = (
+    <TextInput
+      label="Příjmení"
+      withAsterisk
+      {...form.getInputProps("lastName")}
+    />
+  );
+  const emailInput = (
+    <TextInput label="E-mail" withAsterisk {...form.getInputProps("email")} />
+  );
+  const phoneInput = (
+    <TextInput
+      label="Telefonní číslo"
+      withAsterisk
+      {...form.getInputProps("phone")}
+    />
+  );
 
   return mode === "EFF" ? (
     <Stack>

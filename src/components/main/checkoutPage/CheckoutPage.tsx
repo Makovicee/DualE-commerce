@@ -19,36 +19,31 @@ import {
   Check,
   CreditCard,
   ShoppingCart,
+  X,
 } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "../../../core/CartContext";
 import CompleteModal from "./CompleteModal";
+import {
+  useCheckoutForm,
+  type CheckoutFormValues,
+} from "../../../core/logic/useCheckoutForm";
+import { notifications } from "@mantine/notifications";
 
-const STEPS = [
-  {
-    label: "Košík",
-    description: "Přehled položek",
-    icon: ShoppingCart,
-    effLabel: "3. Položky",
-    component: <Cart />,
-  },
-  {
-    label: "Doprava",
-    description: "Detaily doručení",
-    icon: Car,
-    effLabel: "1. Doprava",
-    component: <Delivery />,
-  },
-  {
-    label: "Platba",
-    description: "Zaplacení objednávky",
-    icon: CreditCard,
-    effLabel: "2. Platební údaje",
-    component: <Payment />,
-  },
-];
-
-const EFF_ORDER = [STEPS[1], STEPS[2], STEPS[0]];
+const STEP_FIELDS: Record<number, (keyof CheckoutFormValues)[]> = {
+  0: [], // košík
+  1: [
+    "date",
+    "address",
+    "city",
+    "zip",
+    "firstName",
+    "lastName",
+    "email",
+    "phone",
+  ],
+  2: ["cardNumber", "cardExpiry", "cardCVC", "cardName"],
+};
 
 const CheckoutPage = () => {
   const { mode } = useUIMode();
@@ -57,12 +52,71 @@ const CheckoutPage = () => {
   const { items, clearCart } = useCart();
   const [completed, setCompleted] = useState(false);
 
+  const form = useCheckoutForm();
+
+  const STEPS = [
+    {
+      label: "Košík",
+      description: "Přehled položek",
+      icon: ShoppingCart,
+      effLabel: "3. Položky",
+      component: <Cart form={form} />,
+    },
+    {
+      label: "Doprava",
+      description: "Detaily doručení",
+      icon: Car,
+      effLabel: "1. Doprava",
+      component: <Delivery form={form} />,
+    },
+    {
+      label: "Platba",
+      description: "Zaplacení objednávky",
+      icon: CreditCard,
+      effLabel: "2. Platební údaje",
+      component: <Payment form={form} />,
+    },
+  ];
+
+  const EFF_ORDER = [STEPS[1], STEPS[2], STEPS[0]];
+
+  const handleNext = () => {
+    const fields = STEP_FIELDS[active];
+
+    if (fields.length > 0) {
+      const errors = form.validate();
+      const hasStepErrors = fields.some((field) => errors.errors[field]);
+
+      if (hasStepErrors) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        notifications.show({
+          position: "top-center",
+          withCloseButton: true,
+          autoClose: 5000,
+          title: "Chyba v údajích",
+          message:
+            "Ve vašem momentálním kroku objednávky se nachází neplatné údaje. Prosíme o jejich opravu pro pokračování v objednávce.",
+          color: "red",
+          icon: <X />,
+        });
+        return;
+      }
+    }
+
+    if (active === STEPS.length - 1) {
+      handleComplete();
+    } else {
+      handleStepClick(active + 1);
+    }
+  };
+
   const handleComplete = () => {
     clearCart();
     setCompleted(true);
   };
 
   const handleStepClick = (step: number) => {
+    form.clearErrors();
     setActive(step);
     setKey((k) => k + 1);
   };
@@ -73,7 +127,7 @@ const CheckoutPage = () => {
       cols={3}
     >
       {EFF_ORDER.map((item, i) => (
-        <Box key={i} px="xl" pt={"md"}>
+        <Box key={i} px="xl" pt={"sm"}>
           <Text ta="center" size="md" fw={500} c="dimmed">
             {item.label}
           </Text>
@@ -120,11 +174,7 @@ const CheckoutPage = () => {
         </ActionIcon>
         <Button
           color="grape"
-          onClick={() =>
-            active === STEPS.length - 1
-              ? handleComplete()
-              : handleStepClick(active + 1)
-          }
+          onClick={handleNext}
           disabled={active === STEPS.length || items.length === 0}
           size="lg"
           rightSection={

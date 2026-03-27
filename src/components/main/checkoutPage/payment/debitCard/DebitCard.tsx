@@ -12,9 +12,16 @@ import {
 } from "@mantine/core";
 import { RotateCcw, Wifi } from "lucide-react";
 import { useState } from "react";
+import type { CheckoutFormProps } from "../../../../../core/logic/useCheckoutForm";
 
-const DebitCard = () => {
+const DebitCard = ({ form }: CheckoutFormProps) => {
   const [flipped, setFlipped] = useState(false);
+
+  const cardBg = {
+    backgroundImage: "url('/misc/DebitCard.png')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  };
 
   return (
     <Stack align="flex-end">
@@ -41,17 +48,32 @@ const DebitCard = () => {
               width: "100%",
               height: "100%",
               backfaceVisibility: "hidden",
+              ...cardBg,
             }}
           >
             <Stack gap="xl">
               <Text size="lg" fw="bold">
                 Debit
               </Text>
-              <PinInput type="number" length={16} gap="xs" size="sm" />
+              <PinInput
+                type="number"
+                length={16}
+                gap="xs"
+                size="sm"
+                {...form.getInputProps("cardNumber")}
+              />
               <Group align="end" justify="space-between">
                 <Group>
-                  <TextInput size="sm" label="Držitel karty" />
-                  <TextInput size="sm" label="Platnost" />
+                  <TextInput
+                    size="sm"
+                    label="Držitel karty"
+                    {...form.getInputProps("cardName")}
+                  />
+                  <TextInput
+                    size="sm"
+                    label="Platnost"
+                    {...form.getInputProps("cardExpiry")}
+                  />
                 </Group>
                 <Box pos="relative" w={72} h={48}>
                   <Paper
@@ -84,12 +106,18 @@ const DebitCard = () => {
               height: "100%",
               backfaceVisibility: "hidden",
               transform: "rotateY(180deg)",
+              ...cardBg,
             }}
             p={0}
           >
             <Stack gap={"xl"} justify="center" h="100%" align="flex-end">
               <Box p={0} m={0} bg="yellow.3" w={"100%"} h={56} />
-              <TextInput label="CVC" w={120} pr={"xl"} />
+              <TextInput
+                label="CVC"
+                w={120}
+                pr={"xl"}
+                {...form.getInputProps("cardCVC")}
+              />
               <Group w={"100%"} justify="space-between" px={"xl"}>
                 <Text size="sm" c="dimmed">
                   Vaše platební údaje udržujeme v maximálním bezpečí.
