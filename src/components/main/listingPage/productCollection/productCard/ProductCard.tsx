@@ -109,7 +109,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
                   disabled={variant.stock === 0}
                   allowDecimal={false}
                   allowNegative={false}
-                  defaultValue={
+                  value={
                     items.find(
                       (item) =>
                         item.product.id === product.id &&

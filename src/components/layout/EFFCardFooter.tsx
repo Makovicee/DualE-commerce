@@ -2,10 +2,18 @@ import { ActionIcon, Button, Divider, Group, Stack, Text } from "@mantine/core";
 import { ArrowRight, Redo2, Trash2, Undo2 } from "lucide-react";
 import { useCart } from "../../core/CartContext";
 import { useNavigate } from "react-router-dom";
+import { useHotkeys } from "@mantine/hooks";
 
 const EFFCardFooter = () => {
   const { totalItems, totalPrice, clearCart, undo, redo } = useCart();
   const navigate = useNavigate();
+
+  useHotkeys([
+    ["mod+z", undo],
+    ["mod+y", redo],
+    ["mod+d", clearCart],
+  ]);
+
   return (
     <Group justify="space-between" pl={"xl"} h="100%" align="stretch" gap="xl">
       <Group align="center">
@@ -21,14 +29,19 @@ const EFFCardFooter = () => {
       </Group>
 
       <Group gap="xl" align="center">
-        <ActionIcon
-          onClick={clearCart}
-          color="red"
-          size="input-md"
-          variant="light"
-        >
-          <Trash2 size={20} />
-        </ActionIcon>
+        <Stack align="center" gap={2}>
+          <ActionIcon
+            onClick={clearCart}
+            color="red"
+            size="input-xs"
+            variant="light"
+          >
+            <Trash2 size={20} />
+          </ActionIcon>
+          <Text c="dimmed" size="xs">
+            ⌘ + D
+          </Text>
+        </Stack>
         <Divider my={"xl"} orientation="vertical" />
         <Stack align="center" gap={2}>
           <ActionIcon onClick={undo} size="input-xs" variant="light">

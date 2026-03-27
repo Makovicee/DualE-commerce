@@ -25,7 +25,7 @@ const ItemCard = ({ item }: { item: CartItem }) => {
           </Group>
           <Group gap={"xs"}>
             <NumberInput
-              defaultValue={item.quantity}
+              value={item.quantity}
               min={1}
               styles={{ input: { textAlign: "center" } }}
               w={100}
