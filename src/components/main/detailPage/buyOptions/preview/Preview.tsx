@@ -7,9 +7,12 @@ import {
   Stack,
   ActionIcon,
   Badge,
+  Transition,
 } from "@mantine/core";
-import { BadgePercent, ShoppingBasket } from "lucide-react";
+import { BadgePercent, Check, ShoppingBasket } from "lucide-react";
 import type { Product, VariantSize } from "../../../../../core/data/products";
+import { useCart } from "../../../../../core/CartContext";
+import { useEffect, useState } from "react";
 
 interface PreviewProps {
   product: Product;
@@ -25,20 +28,26 @@ const SIZE_MAP: Record<VariantSize, number> = {
 const Preview = ({ product, selectedVariant }: PreviewProps) => {
   const variant = product.variants[selectedVariant];
   const imageSize = SIZE_MAP[selectedVariant];
+  const { addItem } = useCart();
+  const [added, setAdded] = useState(false);
+
+  const handleAdd = () => {
+    addItem(product, selectedVariant);
+    setAdded(true);
+  };
+
+  useEffect(() => {
+    if (!added) return;
+    const timer = setTimeout(() => setAdded(false), 1000);
+    return () => clearTimeout(timer);
+  }, [added]);
 
   return (
     <Card flex={1} withBorder>
-      <Card.Section flex={1} withBorder p={"md"}>
+      <Card.Section flex={1} withBorder p="md">
         {product.discount && (
-          <Badge
-            p={"xs"}
-            h={75}
-            color="grape"
-            pos="absolute"
-            top={16}
-            right={16}
-          >
-            <Stack gap={"xs"}>
+          <Badge p="xs" h={75} color="grape" pos="absolute" top={16} right={16}>
+            <Stack gap="xs">
               <Text size="xs" fw={500}>
                 {product.discount * 100}
               </Text>
@@ -46,7 +55,7 @@ const Preview = ({ product, selectedVariant }: PreviewProps) => {
             </Stack>
           </Badge>
         )}
-        <Center h={"100%"}>
+        <Center h="100%">
           <Image
             src={product.img}
             fallbackSrc="https://placehold.co/300x300"
@@ -59,7 +68,7 @@ const Preview = ({ product, selectedVariant }: PreviewProps) => {
           />
         </Center>
       </Card.Section>
-      <Card.Section withBorder pt={"sm"}>
+      <Card.Section withBorder pt="sm">
         <Group justify="flex-end" gap="md">
           <Stack align="flex-end" gap={0}>
             <Text fw={700} size="xl">
@@ -71,8 +80,31 @@ const Preview = ({ product, selectedVariant }: PreviewProps) => {
               </Text>
             )}
           </Stack>
-          <ActionIcon color={"grape"} size={"input-xl"}>
-            <ShoppingBasket size={36} />
+
+          <ActionIcon
+            color={added ? "teal" : "grape"}
+            size="input-xl"
+            onClick={handleAdd}
+            style={{
+              transition: "background-color 300ms ease",
+              pointerEvents: added ? "none" : "auto",
+            }}
+            disabled={variant.stock === 0}
+          >
+            <Transition mounted={!added} transition="slide-up" duration={200}>
+              {(styles) => (
+                <span style={{ position: "absolute", ...styles }}>
+                  <ShoppingBasket size={36} />
+                </span>
+              )}
+            </Transition>
+            <Transition mounted={added} transition="slide-up" duration={200}>
+              {(styles) => (
+                <span style={{ position: "absolute", ...styles }}>
+                  <Check size={36} />
+                </span>
+              )}
+            </Transition>
           </ActionIcon>
         </Group>
       </Card.Section>
