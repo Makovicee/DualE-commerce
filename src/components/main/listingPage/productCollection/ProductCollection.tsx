@@ -1,4 +1,4 @@
-import { Center, ScrollArea, SimpleGrid, Stack, Text } from "@mantine/core";
+import { Center, Grid, ScrollArea, Stack, Text } from "@mantine/core";
 import { useUIMode } from "../../../../contexts/UIModeContext";
 import ProductCard from "./productCard/ProductCard";
 import type { Product } from "../../../../core/data/products";
@@ -9,6 +9,18 @@ interface ProductCollectionProps {
 
 const ProductCollection = ({ products }: ProductCollectionProps) => {
   const { mode } = useUIMode();
+
+  const getASTLayout = (index: number) => {
+    const patterns = [
+      { span: 6, h: 450 },
+      { span: 3, h: 450 },
+      { span: 3, h: 450 },
+      { span: 4, h: 350 },
+      { span: 8, h: 350 },
+      { span: 12, h: 500 },
+    ];
+    return patterns[index % patterns.length];
+  };
 
   if (products.length === 0) {
     return (
@@ -34,7 +46,20 @@ const ProductCollection = ({ products }: ProductCollectionProps) => {
           <Stack>{productCards}</Stack>
         </ScrollArea>
       ) : (
-        <SimpleGrid cols={4}>{productCards}</SimpleGrid>
+        <Grid gutter="md">
+          {products.map((product, index) => {
+            const layout = getASTLayout(index);
+            return (
+              <Grid.Col key={product.id} span={layout.span}>
+                <ProductCard
+                  product={product}
+                  height={layout.h}
+                  index={index}
+                />
+              </Grid.Col>
+            );
+          })}
+        </Grid>
       )}
     </>
   );

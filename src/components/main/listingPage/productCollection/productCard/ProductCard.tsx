@@ -21,13 +21,19 @@ import { useCart } from "../../../../../core/CartContext";
 
 interface ProductCardProps {
   product: Product;
+  height?: number | string;
+  index?: number;
 }
 
-const ProductCard = ({ product }: ProductCardProps) => {
+const ProductCard = ({ product, height, index = 0 }: ProductCardProps) => {
   const { mode } = useUIMode();
   const { hovered, ref } = useHover();
   const navigate = useNavigate();
   const { updateItemCount, items } = useCart();
+
+  //AST specific
+  const bgColors = ["#E9F5E9", "#F1F8F1", "#E3F2FD", "#F3E5F5", "#FFF3E0"];
+  const bgColor = bgColors[index % bgColors.length];
 
   const image = (
     <Image
@@ -35,6 +41,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       fallbackSrc="https://placehold.co/200x200"
       h={mode === "EFF" ? 64 : "100%"}
       w={mode === "EFF" ? 64 : "100%"}
+      fit={mode === "AST" ? "contain" : undefined}
     />
   );
 
@@ -64,7 +71,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
     .join(" / ");
 
   return (
-    <Card p={mode === "AST" ? 0 : "md"}>
+    <Card
+      p={mode === "AST" ? 0 : "md"}
+      bg={mode === "AST" ? bgColor : undefined}
+      h={mode === "AST" ? height : "auto"}
+    >
       {mode === "EFF" ? (
         <Grid align="center">
           <Grid.Col span={2}>
@@ -148,15 +159,25 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </Grid>
       ) : (
         <Stack
-          gap="xs"
+          gap={0}
+          h="100%"
           style={{ cursor: "pointer" }}
           onClick={() => {
             window.scrollTo(0, 0);
             navigate(`/detail/${product.id}`);
           }}
         >
-          <div ref={ref} style={{ position: "relative" }}>
+          <div
+            ref={ref}
+            style={{
+              position: "relative",
+              flex: 1,
+              height: "100%",
+              display: "flex",
+            }}
+          >
             {image}
+
             {product?.discount && (
               <Badge
                 p={"xs"}
