@@ -15,6 +15,22 @@ import type { CheckoutFormProps } from "../../../../../core/logic/useCheckoutFor
 const CustomerInfo = ({ form }: CheckoutFormProps) => {
   const { mode } = useUIMode();
 
+  const handleEmailBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const email = e.target.value;
+    const localPart = email.split("@")[0];
+    if (!localPart) return;
+
+    const parts = localPart.split(/[._-]/);
+    if (parts.length >= 2) {
+      const capitalize = (s: string) =>
+        s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+      if (!form.values.firstName)
+        form.setFieldValue("firstName", capitalize(parts[0]));
+      if (!form.values.lastName)
+        form.setFieldValue("lastName", capitalize(parts[parts.length - 1]));
+    }
+  };
+
   const firstNameInput = (
     <TextInput
       label="Jméno"
@@ -30,7 +46,12 @@ const CustomerInfo = ({ form }: CheckoutFormProps) => {
     />
   );
   const emailInput = (
-    <TextInput label="E-mail" withAsterisk {...form.getInputProps("email")} />
+    <TextInput
+      label="E-mail"
+      withAsterisk
+      {...form.getInputProps("email")}
+      onBlur={mode === "EFF" ? handleEmailBlur : undefined}
+    />
   );
   const phoneInput = (
     <TextInput
