@@ -7,16 +7,18 @@ import SpecialOffer from "./offers/SpecialOffer";
 const SpecialOffers = () => {
   const { mode } = useUIMode();
 
+  const specialOffer = <SpecialOffer />;
+  const productOfTheWeek = <ProductOfTheWeek />;
+  const newArrivals = <NewArrivals />;
+
   if (mode === "EFF") {
     return (
       <Grid gutter="md">
-        <Grid.Col span={6}>
-          <SpecialOffer />
-        </Grid.Col>
+        <Grid.Col span={6}>{specialOffer}</Grid.Col>
         <Grid.Col span={6}>
           <Stack gap="md" h="100%">
-            <ProductOfTheWeek />
-            <NewArrivals />
+            {productOfTheWeek}
+            {newArrivals}
           </Stack>
         </Grid.Col>
       </Grid>
@@ -25,9 +27,9 @@ const SpecialOffers = () => {
 
   return (
     <>
-      <SpecialOffer />
-      <ProductOfTheWeek />
-      <NewArrivals />
+      {specialOffer}
+      {productOfTheWeek}
+      {newArrivals}
     </>
   );
 };
