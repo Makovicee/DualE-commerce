@@ -6,6 +6,7 @@ import {
   Text,
   Image,
   UnstyledButton,
+  ScrollArea,
 } from "@mantine/core";
 import ItemRow from "./ItemRow";
 import { useUIMode } from "../../../../../contexts/UIModeContext";
@@ -63,44 +64,46 @@ const CartItems = ({ checked, setChecked }: CartItemsProps) => {
               Smazat vše
             </Text>
           </Group>
-
-          <Table>
-            <Table.Tbody>
-              {items.map((item) => {
-                const key = `${item.product.id}-${item.variant}`;
-                return (
-                  <ItemRow
-                    key={key}
-                    name={item.product.name}
-                    size={item.variant}
-                    quantity={item.quantity}
-                    price={
-                      item.product.variants[item.variant].price * item.quantity
-                    }
-                    checked={checked.includes(key)}
-                    onCheck={() => toggleCheck(key)}
-                    onRemove={() => removeItem(item.product.id, item.variant)}
-                    onQuantityChange={(qty) =>
-                      updateItemCount(item.product, item.variant, qty)
-                    }
-                  />
-                );
-              })}
-            </Table.Tbody>
-            <Table.Tfoot>
-              <Table.Tr>
-                <Table.Td colSpan={4}>
-                  <Text size="xs">Celkem</Text>
-                </Table.Td>
-                <Table.Td>
-                  <Text size="xs" fw={700}>
-                    {totalPrice.toFixed(2)}
-                  </Text>
-                </Table.Td>
-                <Table.Td />
-              </Table.Tr>
-            </Table.Tfoot>
-          </Table>
+          <ScrollArea mah="35vh" offsetScrollbars type="auto">
+            <Table>
+              <Table.Tbody>
+                {items.map((item) => {
+                  const key = `${item.product.id}-${item.variant}`;
+                  return (
+                    <ItemRow
+                      key={key}
+                      name={item.product.name}
+                      size={item.variant}
+                      quantity={item.quantity}
+                      price={
+                        item.product.variants[item.variant].price *
+                        item.quantity
+                      }
+                      checked={checked.includes(key)}
+                      onCheck={() => toggleCheck(key)}
+                      onRemove={() => removeItem(item.product.id, item.variant)}
+                      onQuantityChange={(qty) =>
+                        updateItemCount(item.product, item.variant, qty)
+                      }
+                    />
+                  );
+                })}
+              </Table.Tbody>
+              <Table.Tfoot>
+                <Table.Tr>
+                  <Table.Td colSpan={4}>
+                    <Text size="xs">Celkem</Text>
+                  </Table.Td>
+                  <Table.Td>
+                    <Text size="xs" fw={700}>
+                      {totalPrice.toFixed(2)}
+                    </Text>
+                  </Table.Td>
+                  <Table.Td />
+                </Table.Tr>
+              </Table.Tfoot>
+            </Table>
+          </ScrollArea>
         </Stack>
       ) : (
         <Stack gap={0}>
