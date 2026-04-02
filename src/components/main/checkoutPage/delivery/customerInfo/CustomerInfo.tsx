@@ -31,6 +31,12 @@ const CustomerInfo = ({ form }: CheckoutFormProps) => {
     }
   };
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const digits = e.target.value.replace(/\D/g, "").slice(0, 9);
+    const formatted = digits.replace(/(\d{3})(?=\d)/g, "$1 ");
+    form.setFieldValue("phone", formatted);
+  };
+
   const firstNameInput = (
     <TextInput
       label="Jméno"
@@ -58,6 +64,7 @@ const CustomerInfo = ({ form }: CheckoutFormProps) => {
       label="Telefonní číslo"
       withAsterisk
       {...form.getInputProps("phone")}
+      onChange={handlePhoneChange}
     />
   );
 
