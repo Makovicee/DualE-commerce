@@ -1,11 +1,4 @@
-import {
-  ActionIcon,
-  Autocomplete,
-  Group,
-  Indicator,
-  Stack,
-  Text,
-} from "@mantine/core";
+import { ActionIcon, Autocomplete, Group, Indicator } from "@mantine/core";
 import { Flower, Home, Search, ShoppingCart } from "lucide-react";
 import { useUIMode } from "../../contexts/UIModeContext";
 import AppLogo from "./AppLogo";
@@ -26,27 +19,22 @@ const ASTNavbar = () => {
       <Group gap="xl">
         <AppLogo onClick={toggle} />
         <Group gap={"lg"} ml={"xl"}>
-          <Stack gap={0} align="center">
-            <ActionIcon
-              onClick={() => navigate("/")}
-              color="dark"
-              variant="transparent"
-              size={"input-sm"}
-            >
-              <Home size={26} />
-            </ActionIcon>
-            <Text size="sm">Domů</Text>
-          </Stack>
-          <Stack gap={0} align="center">
-            <ActionIcon
-              onClick={() => navigate("/listing")}
-              variant="transparent"
-              size={"input-sm"}
-            >
-              <Flower size={26} />
-            </ActionIcon>
-            <Text size="sm">Kolekce</Text>
-          </Stack>
+          <ActionIcon
+            onClick={() => navigate("/")}
+            color="dark"
+            variant="transparent"
+            size={"input-sm"}
+          >
+            <Home size={32} />
+          </ActionIcon>
+
+          <ActionIcon
+            onClick={() => navigate("/listing")}
+            variant="transparent"
+            size={"input-sm"}
+          >
+            <Flower size={36} />
+          </ActionIcon>
         </Group>
       </Group>
       <Group gap={"xs"}>

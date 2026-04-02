@@ -10,9 +10,27 @@ import {
 } from "@mantine/core";
 import { X } from "lucide-react";
 import { useCart, type CartItem } from "../../../../../core/CartContext";
+import { modals } from "@mantine/modals";
 
 const ItemCard = ({ item }: { item: CartItem }) => {
   const { removeItem, updateItemCount } = useCart();
+
+  const openConfirmModal = () =>
+    modals.openConfirmModal({
+      title: "Odstranit položku ze seznamu",
+      centered: true,
+      children: (
+        <Text>
+          Opravdu si přejete odstranit položku ze seznamu? Mohla by se Vám
+          hodit.
+        </Text>
+      ),
+      labels: { confirm: "Odebrat", cancel: "Zavřít" },
+      confirmProps: { color: "red" },
+
+      onConfirm: () => removeItem(item.product.id, item.variant),
+    });
+
   return (
     <Paper p={"xs"}>
       <Stack>
@@ -36,7 +54,7 @@ const ItemCard = ({ item }: { item: CartItem }) => {
             <ActionIcon
               variant="transparent"
               color="red"
-              onClick={() => removeItem(item.product.id, item.variant)}
+              onClick={openConfirmModal}
             >
               <X size={20} />
             </ActionIcon>

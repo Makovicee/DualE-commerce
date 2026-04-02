@@ -94,7 +94,6 @@ const FilterOverlay = ({
                       <UnstyledButton
                         onClick={() => {
                           navigate(category.path + search);
-                          close();
                         }}
                       >
                         <Title
